@@ -61,9 +61,10 @@ namespace Nez
 		{
 			base.OnSceneBackBufferSizeChanged(newWidth, newHeight);
 
-			// this is a bit of a hack. we maybe should take the Camera in the constructor
-			if (Camera == null)
-				Camera = Core.Scene.CreateEntity("screenspace camera").AddComponent<Camera>();
+			if(Core.Scene is Scene scene && Camera == null)
+			{
+				Camera = scene.CreateEntity("screenspace camera").AddComponent<Camera>();
+			}
 		}
 	}
 }
