@@ -1052,7 +1052,7 @@ namespace Nez
 			var viewport = GraphicsDevice.Viewport;
 
 			// inlined CreateOrthographicOffCenter
-#if FNA
+#if (FNA || NEZCORE)
 			_projectionMatrix.M11 = (float)( 2.0 / (double) ( viewport.Width / 2 * 2 - 1 ) );
 			_projectionMatrix.M22 = (float)( -2.0 / (double) ( viewport.Height / 2 * 2 - 1 ) );
 #else

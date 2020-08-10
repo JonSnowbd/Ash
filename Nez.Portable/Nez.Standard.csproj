@@ -17,6 +17,7 @@
 		<NoWarn>1591,1570,1572,1573</NoWarn>
 		<IntermediateOutputPath>obj\Nez\$(Configuration)</IntermediateOutputPath>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<DefineConstants>NEZCORE</DefineConstants>
 	</PropertyGroup>
   
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">

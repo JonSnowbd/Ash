@@ -39,6 +39,7 @@ namespace Nez
 
 		protected VirtualInput()
 		{
+			Guards = new List<GuardDelegate>();
 			Input._virtualInputs.Add(this);
 		}
 

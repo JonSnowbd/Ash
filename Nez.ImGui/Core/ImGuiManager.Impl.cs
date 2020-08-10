@@ -127,9 +127,9 @@ namespace Nez.ImGuiTools
 				// if the window's being hovered and we click on it with any mouse button, optionally focus the window.
 				if (ImGui.IsWindowHovered())
 				{
-					if (ImGui.IsMouseClicked(0)
-					|| (ImGui.IsMouseClicked(1) && FocusGameWindowOnRightClick)
-					|| (ImGui.IsMouseClicked(2) && FocusGameWindowOnMiddleClick))
+					if (ImGui.IsMouseClicked(ImGuiMouseButton.Left)
+					|| (ImGui.IsMouseClicked(ImGuiMouseButton.Right) && FocusGameWindowOnRightClick)
+					|| (ImGui.IsMouseClicked(ImGuiMouseButton.Middle) && FocusGameWindowOnMiddleClick))
 					{
 						ImGui.SetWindowFocus();
 						focusedWindow = true;
