@@ -305,7 +305,7 @@ namespace Nez
 		/// only be called if there is a non-null Effect.
 		/// </summary>
 		/// <param name="camera">Camera.</param>
-		public virtual void OnPreRender(Camera camera)
+		public virtual void OnPreRender(object camera) // TODO: Boxing like this is horrible
 		{
 		}
 

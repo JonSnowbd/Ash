@@ -33,7 +33,7 @@ namespace Nez
 		/// than the backbuffer. This situation basically results in mouse coordinates in screen space instead of
 		/// in the render target coordinate system;
 		/// </summary>
-		public static Vector2 ResolutionScale => _resolutionScale;
+		public static Vector2 ResolutionScale { get { return _resolutionScale; } set { _resolutionScale = value; } }
 
 		/// <summary>
 		/// set by the Scene and used to get mouse input from raw screen coordinates to render target coordinates. Any
@@ -41,7 +41,7 @@ namespace Nez
 		/// letterbox portion of the render).
 		/// </summary>
 		/// <returns></returns>
-		public static Vector2 ResolutionOffset => _resolutionOffset.ToVector2();
+		public static Vector2 ResolutionOffset { get { return _resolutionOffset.ToVector2(); } set { _resolutionOffset = value.ToPoint(); } }
 
 		/// <summary>
 		/// gets/sets the maximum supported gamepads

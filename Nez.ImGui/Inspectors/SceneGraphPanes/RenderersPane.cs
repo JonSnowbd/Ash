@@ -16,7 +16,7 @@ namespace Nez.ImGuiTools.SceneGraphPanes
 		bool _isRendererListInitialized;
 
 		// Used to hold a reference to the Cast scene, if it derives from `Scene`
-		Scene CastScene;
+		ECScene CastScene;
 
 		void UpdateRenderersPaneList()
 		{
@@ -36,7 +36,7 @@ namespace Nez.ImGuiTools.SceneGraphPanes
 
 		public void OnSceneChanged()
 		{
-			CastScene = Core.Scene as Scene;
+			CastScene = Core.Scene as ECScene;
 			if (CastScene == null)
 				throw new InvalidOperationException("You cannot use Post Processors if you are not inheriting the base Scene implementation.");
 

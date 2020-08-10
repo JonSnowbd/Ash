@@ -10,10 +10,10 @@ namespace Nez.ImGuiTools.SceneGraphPanes
 		const int MIN_ENTITIES_FOR_CLIPPER = 100;
 		string _newEntityName = "";
 
-		Scene CastScene;
+		ECScene CastScene;
 		unsafe public void Draw()
 		{
-			CastScene = Core.Scene as Scene;
+			CastScene = Core.Scene as ECScene;
 			if (CastScene == null)
 				return;
 

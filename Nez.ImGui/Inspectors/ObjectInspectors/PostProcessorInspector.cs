@@ -15,7 +15,7 @@ namespace Nez.ImGuiTools.ObjectInspectors
 		PostProcessor _postProcessor;
 
 		// Used to hold a reference to the Cast scene, if it derives from `Scene`
-		Scene CastScene;
+		ECScene CastScene;
 
 		public PostProcessorInspector(PostProcessor postProcessor)
 		{
@@ -61,7 +61,7 @@ namespace Nez.ImGuiTools.ObjectInspectors
 			{
 				if (ImGui.Selectable("Remove PostProcessor"))
 				{
-					if(Core.Scene is Scene s)
+					if(Core.Scene is ECScene s)
 					{
 						isOpen = false;
 						s.RemovePostProcessor(_postProcessor);

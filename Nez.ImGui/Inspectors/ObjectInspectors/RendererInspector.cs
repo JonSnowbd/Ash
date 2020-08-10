@@ -36,7 +36,7 @@ namespace Nez.ImGuiTools.ObjectInspectors
 			{
 				if (ImGui.Selectable("Remove Renderer"))
 				{
-					if(Core.Scene is Scene s)
+					if(Core.Scene is ECScene s)
 					{
 						isOpen = false;
 						s.RemoveRenderer(_renderer);

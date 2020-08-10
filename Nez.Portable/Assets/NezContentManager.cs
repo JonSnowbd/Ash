@@ -7,7 +7,6 @@ using Microsoft.Xna.Framework.Content;
 using System.Threading.Tasks;
 using System.IO;
 using Microsoft.Xna.Framework;
-using Nez.ParticleDesigner;
 using Nez.Sprites;
 using Nez.Textures;
 using Nez.Tiled;
@@ -141,25 +140,6 @@ namespace Nez.Systems
 			DisposableAssets.Add(tiledMap);
 
 			return tiledMap;
-		}
-
-		/// <summary>
-		/// Loads a ParticleDesigner pex file
-		/// </summary>
-		public Particles.ParticleEmitterConfig LoadParticleEmitterConfig(string name)
-		{
-			if (LoadedAssets.TryGetValue(name, out var asset))
-			{
-				if (asset is Particles.ParticleEmitterConfig config)
-					return config;
-			}
-
-			var emitterConfig = ParticleEmitterConfigLoader.Load(name);
-
-			LoadedAssets[name] = emitterConfig;
-			DisposableAssets.Add(emitterConfig);
-
-			return emitterConfig;
 		}
 
 		/// <summary>
@@ -351,28 +331,21 @@ namespace Nez.Systems
 		{
 			if (IsAssetLoaded(assetName))
 			{
-				try
+				// first fetch the actual asset. we already know its loaded so we'll grab it directly
+				var assetToRemove = LoadedAssets[assetName];
+				for (var i = 0; i < DisposableAssets.Count; i++)
 				{
-					// first fetch the actual asset. we already know its loaded so we'll grab it directly
-					var assetToRemove = LoadedAssets[assetName];
-					for (var i = 0; i < DisposableAssets.Count; i++)
+					// see if the asset is disposeable. If so, find and dispose of it.
+					var typedAsset = DisposableAssets[i] as T;
+					if (typedAsset != null && typedAsset == assetToRemove)
 					{
-						// see if the asset is disposeable. If so, find and dispose of it.
-						var typedAsset = DisposableAssets[i] as T;
-						if (typedAsset != null && typedAsset == assetToRemove)
-						{
-							typedAsset.Dispose();
-							DisposableAssets.RemoveAt(i);
-							break;
-						}
+						typedAsset.Dispose();
+						DisposableAssets.RemoveAt(i);
+						break;
 					}
+				}
 
-					LoadedAssets.Remove(assetName);
-				}
-				catch (Exception e)
-				{
-					Debug.Error("Could not unload asset {0}. {1}", assetName, e);
-				}
+				LoadedAssets.Remove(assetName);
 			}
 		}
 
@@ -408,7 +381,7 @@ namespace Nez.Systems
 		/// provides a string suitable for logging with all the currently loaded assets and effects
 		/// </summary>
 		/// <returns>The loaded assets.</returns>
-		internal string LogLoadedAssets()
+		public string LogLoadedAssets()
 		{
 			var builder = new StringBuilder();
 			foreach (var asset in LoadedAssets.Keys)

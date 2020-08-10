@@ -405,64 +405,6 @@ namespace Nez
 			return result;
 		}
 
-
-		public bool RayIntersects(ref Ray2D ray, out float distance)
-		{
-			distance = 0f;
-			var maxValue = float.MaxValue;
-
-			if (Math.Abs(ray.Direction.X) < 1E-06f)
-			{
-				if ((ray.Start.X < X) || (ray.Start.X > X + Width))
-					return false;
-			}
-			else
-			{
-				var num11 = 1f / ray.Direction.X;
-				var num8 = (X - ray.Start.X) * num11;
-				var num7 = (X + Width - ray.Start.X) * num11;
-				if (num8 > num7)
-				{
-					var num14 = num8;
-					num8 = num7;
-					num7 = num14;
-				}
-
-				distance = MathHelper.Max(num8, distance);
-				maxValue = MathHelper.Min(num7, maxValue);
-				if (distance > maxValue)
-					return false;
-			}
-
-			if (Math.Abs(ray.Direction.Y) < 1E-06f)
-			{
-				if ((ray.Start.Y < Y) || (ray.Start.Y > Y + Height))
-				{
-					return false;
-				}
-			}
-			else
-			{
-				var num10 = 1f / ray.Direction.Y;
-				var num6 = (Y - ray.Start.Y) * num10;
-				var num5 = (Y + Height - ray.Start.Y) * num10;
-				if (num6 > num5)
-				{
-					var num13 = num6;
-					num6 = num5;
-					num5 = num13;
-				}
-
-				distance = MathHelper.Max(num6, distance);
-				maxValue = MathHelper.Min(num5, maxValue);
-				if (distance > maxValue)
-					return false;
-			}
-
-			return true;
-		}
-
-
 		public float? RayIntersects(Ray ray)
 		{
 			var num = 0f;

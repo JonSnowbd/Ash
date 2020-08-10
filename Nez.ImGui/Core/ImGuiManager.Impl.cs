@@ -17,7 +17,7 @@ namespace Nez.ImGuiTools
 		const string kShowSeperateGameWindow = "ImGui_ShowSeperateGameWindow";
 
 		// Used to hold a reference to the Cast scene, if it derives from `Scene`
-		Scene CastScene;
+		ECScene CastScene;
 
 		[Flags]
 		enum WindowPosition
@@ -269,7 +269,7 @@ namespace Nez.ImGuiTools
 		#region GlobalManager Lifecycle
 		public override void OnEnabled()
 		{
-			if (Core.Scene != null && Core.Scene is Scene scene)
+			if (Core.Scene != null && Core.Scene is ECScene scene)
 			{
 				CastScene = scene;
 				CastScene.FinalRenderDelegate = this;
@@ -340,7 +340,7 @@ namespace Nez.ImGuiTools
 			_renderer.AfterLayout();
 		}
 
-		void IFinalRenderDelegate.OnAddedToScene(Scene scene)
+		void IFinalRenderDelegate.OnAddedToScene(ECScene scene)
 		{
 		}
 

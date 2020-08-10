@@ -61,7 +61,7 @@ namespace Nez.ImGuiTools
 			NezImGuiThemes.DarkTheme1();
 
 			// find all Scenes
-			_sceneSubclasses = ReflectionUtils.GetAllSubclasses(typeof(Scene), true);
+			_sceneSubclasses = ReflectionUtils.GetAllSubclasses(typeof(ECScene), true);
 
 			// tone down indent
 			ImGui.GetStyle().IndentSpacing = 12;
@@ -131,8 +131,8 @@ namespace Nez.ImGuiTools
 					{
 						if (ImGui.MenuItem(sceneType.Name))
 						{
-							var scene = (Scene) Activator.CreateInstance(sceneType);
-							Core.StartSceneTransition(new FadeTransition(() => scene));
+							var scene = (ECScene) Activator.CreateInstance(sceneType);
+							Core.Scene = scene;
 						}
 					}
 
@@ -152,7 +152,7 @@ namespace Nez.ImGuiTools
 
 				if (ImGui.BeginMenu("Game View"))
 				{
-					var s = Core.Scene as Scene;
+					var s = Core.Scene as ECScene;
 					var rtSize = s.SceneRenderTargetSize;
 
 					if (ImGui.BeginMenu("Resize"))

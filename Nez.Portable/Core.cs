@@ -1,16 +1,13 @@
-﻿using System;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Collections;
-using Nez.Systems;
-using Nez.Console;
-using Nez.Tweens;
-using Nez.Timers;
+using Microsoft.Xna.Framework.Input;
 using Nez.BitmapFonts;
-using Nez.Analysis;
+using Nez.Systems;
 using Nez.Textures;
-using System.Diagnostics;
+using Nez.Timers;
+using Nez.Tweens;
+using System;
+using System.Collections;
 
 
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo("Nez.ImGui")]
@@ -83,10 +80,10 @@ namespace Nez
 		/// <summary>
 		/// facilitates easy access to the global Content instance for internal classes
 		/// </summary>
-		internal static Core _instance;
+		public static Core _instance;
 
 #if DEBUG
-		internal static long drawCalls;
+		public static long drawCalls;
 		TimeSpan _frameCounterElapsedTime = TimeSpan.Zero;
 		int _frameCounter = 0;
 		string _windowTitle;
@@ -94,7 +91,6 @@ namespace Nez
 
         IScene _scene;
 		IScene _nextScene;
-		internal SceneTransition _sceneTransition;
 
 		/// <summary>
 		/// used to coalesce GraphicsDeviceReset events
@@ -223,8 +219,6 @@ namespace Nez
 				return;
 			}
 
-			StartDebugUpdate();
-
 			// update all our systems and global managers
 			Time.Update((float) gameTime.ElapsedGameTime.TotalSeconds);
 			Input.Update();
@@ -248,12 +242,7 @@ namespace Nez
 				// - we do not update the Scene while a SceneTransition is happening
 				// 		- unless it is SceneTransition that doesn't change Scenes (no reason not to update)
 				//		- or it is a SceneTransition that has already switched to the new Scene (the new Scene needs to do its thing)
-				if (_sceneTransition == null ||
-				    (_sceneTransition != null &&
-				     (!_sceneTransition._loadsNewScene || _sceneTransition._isNewSceneLoaded)))
-				{
-					_scene.Update();
-				}
+				_scene.Update();
 
 				if (_nextScene != null)
 				{
@@ -267,8 +256,6 @@ namespace Nez
 				}
 			}
 
-			EndDebugUpdate();
-
 #if FNA
 			// MonoGame only updates old-school XNA Components in Update which we dont care about. FNA's core FrameworkDispatcher needs
 			// Update called though so we do so here.
@@ -281,108 +268,19 @@ namespace Nez
 			if (PauseOnFocusLost && !IsActive)
 				return;
 
-			StartDebugDraw(gameTime.ElapsedGameTime);
-
-			if (_sceneTransition != null)
-				_sceneTransition.PreRender(Graphics.Instance.Batcher);
-
-			// special handling of SceneTransition if we have one. We either render the SceneTransition or the Scene
-			if (_sceneTransition != null)
-			{
-				if (_scene != null && _sceneTransition.WantsPreviousSceneRender &&
-				    !_sceneTransition.HasPreviousSceneRender)
-				{
-					_scene.Render();
-					_scene.PostRender(_sceneTransition.PreviousSceneRender);
-					StartCoroutine(_sceneTransition.OnBeginTransition());
-				}
-				else if (_scene != null && _sceneTransition._isNewSceneLoaded)
-				{
-					_scene.Render();
-					_scene.PostRender();
-				}
-
-				_sceneTransition.Render(Graphics.Instance.Batcher);
-			}
-			else if (_scene != null)
+			if (_scene != null)
 			{
 				_scene.Render();
-
-#if DEBUG
-				if (DebugRenderEnabled)
-					Debug.Render();
-#endif
 
 				// render as usual if we dont have an active SceneTransition
 				_scene.PostRender();
 			}
-
-			EndDebugDraw();
 		}
 
 		protected override void OnExiting(object sender, EventArgs args)
 		{
 			base.OnExiting(sender, args);
 			Emitter.Emit(CoreEvents.Exiting);
-		}
-
-		#endregion
-
-		#region Debug Injection
-
-		[Conditional("DEBUG")]
-		void StartDebugUpdate()
-		{
-#if DEBUG
-			TimeRuler.Instance.StartFrame();
-			TimeRuler.Instance.BeginMark("update", Color.Green);
-#endif
-		}
-
-		[Conditional("DEBUG")]
-		void EndDebugUpdate()
-		{
-#if DEBUG
-			TimeRuler.Instance.EndMark("update");
-			DebugConsole.Instance.Update();
-			drawCalls = 0;
-#endif
-		}
-
-		[Conditional("DEBUG")]
-		void StartDebugDraw(TimeSpan elapsedGameTime)
-		{
-#if DEBUG
-			TimeRuler.Instance.BeginMark("draw", Color.Gold);
-
-			// fps counter
-			_frameCounter++;
-			_frameCounterElapsedTime += elapsedGameTime;
-			if (_frameCounterElapsedTime >= TimeSpan.FromSeconds(1))
-			{
-				var totalMemory = (GC.GetTotalMemory(false) / 1048576f).ToString("F");
-				Window.Title = string.Format("{0} {1} fps - {2} MB", _windowTitle, _frameCounter, totalMemory);
-				_frameCounter = 0;
-				_frameCounterElapsedTime -= TimeSpan.FromSeconds(1);
-			}
-#endif
-		}
-
-		[Conditional("DEBUG")]
-		void EndDebugDraw()
-		{
-#if DEBUG
-			TimeRuler.Instance.EndMark("draw");
-			DebugConsole.Instance.Render();
-
-			// the TimeRuler only needs to render when the DebugConsole is not open
-			if (!DebugConsole.Instance.IsOpen)
-				TimeRuler.Instance.Render();
-
-#if !FNA
-			drawCalls = GraphicsDevice.Metrics.DrawCount;
-#endif
-#endif
 		}
 
 		#endregion
@@ -395,18 +293,6 @@ namespace Nez
 			Emitter.Emit(CoreEvents.SceneChanged);
 			Time.SceneChanged();
 			GC.Collect();
-		}
-
-		/// <summary>
-		/// temporarily runs SceneTransition allowing one Scene to transition to another smoothly with custom effects.
-		/// </summary>
-		/// <param name="sceneTransition">Scene transition.</param>
-		public static T StartSceneTransition<T>(T sceneTransition) where T : SceneTransition
-		{
-			Insist.IsNull(_instance._sceneTransition,
-				"You cannot start a new SceneTransition until the previous one has completed");
-			_instance._sceneTransition = sceneTransition;
-			return sceneTransition;
 		}
 
 

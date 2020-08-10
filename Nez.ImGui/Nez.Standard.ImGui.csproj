@@ -18,6 +18,7 @@
 
     <ItemGroup>
         <ProjectReference Include="../Nez.Portable/Nez.Standard.csproj" />
+		<ProjectReference Include="../Nez.Impl.DefaultEC/Nez.Impl.DefaultEC.csproj" />
         <ProjectReference Include="../Nez.Persistence/Nez.Persistence.csproj" />
     </ItemGroup>
 
