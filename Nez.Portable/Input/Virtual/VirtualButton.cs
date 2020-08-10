@@ -64,6 +64,8 @@ namespace Nez
 
 		public override void Update()
 		{
+			CalculateGuardCache();
+
 			_bufferCounter -= Time.UnscaledDeltaTime;
 			IsRepeating = false;
 
@@ -110,6 +112,11 @@ namespace Nez
 		{
 			get
 			{
+				if (!_guardCache) // Guards prevented input.
+				{
+					return false;
+				}
+
 				foreach (var node in Nodes)
 					if (node.IsDown)
 						return true;
@@ -123,6 +130,11 @@ namespace Nez
 		{
 			get
 			{
+				if (!_guardCache) // Guards prevented input.
+				{
+					return false;
+				}
+
 				if (_bufferCounter > 0 || IsRepeating)
 					return true;
 
@@ -139,6 +151,11 @@ namespace Nez
 		{
 			get
 			{
+				if (!_guardCache) // Guards prevented input.
+				{
+					return false;
+				}
+
 				foreach (var node in Nodes)
 					if (node.IsReleased)
 						return true;

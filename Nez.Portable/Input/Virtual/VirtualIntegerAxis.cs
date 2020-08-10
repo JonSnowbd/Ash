@@ -17,6 +17,11 @@ namespace Nez
 		{
 			get
 			{
+				if (!_guardCache) // Guards prevented input.
+				{
+					return 0;
+				}
+
 				for (var i = 0; i < Nodes.Count; i++)
 				{
 					var val = Nodes[i].Value;
@@ -42,6 +47,7 @@ namespace Nez
 
 		public override void Update()
 		{
+			CalculateGuardCache();
 			for (var i = 0; i < Nodes.Count; i++)
 				Nodes[i].Update();
 		}

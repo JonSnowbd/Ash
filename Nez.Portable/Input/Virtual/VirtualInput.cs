@@ -1,4 +1,6 @@
-﻿namespace Nez
+﻿using System.Collections.Generic;
+
+namespace Nez
 {
 	/// <summary>
 	/// Represents a virtual button, axis or joystick whose state is determined by the state of its VirtualInputNodes
@@ -24,12 +26,41 @@
 			TakeNewer
 		};
 
+		// Guard related items.
+		public delegate bool GuardDelegate();
+		/// <summary>
+		/// Guards is a chain of boolean checks that can halt a virtual input
+		/// from taking place before even checking if it actually happened.
+		/// This is useful for stopping input when a UI is focused or creating
+		/// complex control layouts where an input is only on when another input is held.
+		/// </summary>
+		public List<GuardDelegate> Guards;
+		protected bool _guardCache;
 
 		protected VirtualInput()
 		{
 			Input._virtualInputs.Add(this);
 		}
 
+		/// <summary>
+		/// This will calculate and assign `_guardCache`. Do this once per frame in your
+		/// virtual inputs.
+		/// </summary>
+		protected void CalculateGuardCache()
+		{
+			_guardCache = true;
+			if (Guards.Count == 0)
+				return;
+			else
+				foreach (var guard in Guards)
+				{
+					if (guard() == false)
+					{
+						_guardCache = false;
+						return;
+					}
+				}
+		}
 
 		/// <summary>
 		/// deregisters the VirtualInput from the Input system. Call this when you are done polling the VirtualInput
@@ -37,6 +68,16 @@
 		public void Deregister()
 		{
 			Input._virtualInputs.Remove(this);
+		}
+
+		/// <summary>
+		/// This will consume the input. For this frame/update, every check after Consumption will return false/0.
+		/// Useful for stopping input from a specific virtual input to prevent it from activating multiple
+		/// actions.
+		/// </summary>
+		public void Consume()
+		{
+			_guardCache = false;
 		}
 
 		public abstract void Update();
