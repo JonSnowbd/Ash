@@ -23,7 +23,7 @@ namespace Nez.Sprites
 		/// parses a .atlas file into a temporary SpriteAtlasData class. If leaveOriginsRelative is true, origins will be left as 0 - 1 range instead
 		/// of multiplying them by the width/height.
 		/// </summary>
-		internal static SpriteAtlasData ParseSpriteAtlasData(string dataFile, bool leaveOriginsRelative = false)
+		public static SpriteAtlasData ParseSpriteAtlasData(string dataFile, bool leaveOriginsRelative = false)
 		{
 			var spriteAtlas = new SpriteAtlasData();
 
