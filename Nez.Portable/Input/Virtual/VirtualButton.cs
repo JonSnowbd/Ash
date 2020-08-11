@@ -170,6 +170,24 @@ namespace Nez
 			_bufferCounter = 0;
 		}
 
+		/// <summary>
+		/// Simple guard for a button. Is a faulty guard until it is held down.
+		/// </summary>
+		/// <returns></returns>
+		public bool HeldGuard()
+		{
+			return IsDown;
+		}
+
+		/// <summary>
+		/// Simple guard for a button. Is an active(true) guard until it is held down.
+		/// </summary>
+		/// <returns></returns>
+		public bool ReleasedGuard()
+		{
+			return IsDown;
+		}
+
 
 		#region Node management
 

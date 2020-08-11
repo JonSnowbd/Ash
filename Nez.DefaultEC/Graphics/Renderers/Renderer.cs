@@ -125,7 +125,7 @@ namespace Nez
 			{
 				_currentMaterial = renderable.Material;
 				if (_currentMaterial.Effect != null)
-					_currentMaterial.OnPreRender(cam);
+					_currentMaterial.OnPreRender(cam.ViewProjectionMatrix);
 				FlushBatch(cam);
 			}
 			else if (renderable.Material == null && _currentMaterial != Material)

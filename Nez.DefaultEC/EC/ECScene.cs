@@ -4,6 +4,10 @@ using Microsoft.Xna.Framework;
 using Nez.Systems;
 using Nez.Textures;
 using Microsoft.Xna.Framework.Graphics;
+using Nez.Analysis;
+using System.Diagnostics;
+using Nez.Console;
+using System.Threading;
 
 namespace Nez
 {
@@ -85,6 +89,8 @@ namespace Nez
 		/// </summary>
 		public Camera Camera;
 
+		public static ECScene Current { get { return Core.Scene as ECScene; } }
+
 		/// <summary>
 		/// clear color that is used in preRender to clear the screen
 		/// </summary>
@@ -99,6 +105,25 @@ namespace Nez
 		/// SamplerState used for the final draw of the RenderTarget to the framebuffer
 		/// </summary>
 		public SamplerState SamplerState = Core.DefaultSamplerState;
+
+		/// <summary>
+		/// enables/disables debug rendering on this scene.
+		/// </summary>
+		public static bool DebugRenderEnabled = false;
+
+		/// <summary>
+		/// Whether or not there is currently a scene transition wipe happening.
+		/// </summary>
+		public static bool IsTransitioning { get; internal set; } = false;
+
+		/// <summary>
+		/// If set to true; all entities will not update until the scene transition is finished.
+		/// </summary>
+		public static bool PauseUpdateOnTransition = false;
+
+		static int frameCount;
+		static float frameCountTime;
+		internal static int drawCalls;
 
 		/// <summary>
 		/// Scene-specific ContentManager. Use it to load up any resources that are needed only by this scene. If you have global/multi-scene
@@ -162,7 +187,6 @@ namespace Nez
 
 		IFinalRenderDelegate _finalRenderDelegate;
 
-
 		#region SceneResolutionPolicy private fields
 
 		/// <summary>
@@ -202,10 +226,11 @@ namespace Nez
 
 		#endregion
 
-
 		RenderTarget2D _sceneRenderTarget;
 		RenderTarget2D _destinationRenderTarget;
 		Action<Texture2D> _screenshotRequestCallback;
+
+		static SceneTransition _sceneTransition = null;
 
 		public readonly FastList<SceneComponent> _sceneComponents = new FastList<SceneComponent>();
 		public FastList<Renderer> _renderers = new FastList<Renderer>();
@@ -392,6 +417,8 @@ namespace Nez
 
 		public virtual void Update()
 		{
+			StartDebugUpdate();
+
 			// we set the RenderTarget here so that the Viewport will match the RenderTarget properly
 			Core.GraphicsDevice.SetRenderTarget(_sceneRenderTarget);
 
@@ -410,9 +437,48 @@ namespace Nez
 
 			// we update our renderables after entity.update in case any new Renderables were added
 			RenderableComponents.UpdateLists();
+
+			EndDebugUpdate();
 		}
 
 		public void Render()
+		{
+			StartDebugDraw();
+			if (_sceneTransition != null)
+				_sceneTransition.PreRender(Graphics.Instance.Batcher);
+
+			if (_sceneTransition != null)
+			{
+				if(_sceneTransition.WantsPreviousSceneRender && !_sceneTransition.HasPreviousSceneRender)
+				{
+					SceneRender();
+					PostRender(_sceneTransition.PreviousSceneRender);
+					Core.StartCoroutine(_sceneTransition.OnBeginTransition());
+				}
+				else
+				{
+					SceneRender();
+					PostRender();
+				}
+
+				_sceneTransition.Render(Graphics.Instance.Batcher);
+			}
+			else
+			{
+				SceneRender();
+#if DEBUG
+				if(DebugRenderEnabled)
+					ECDebug.Render();
+#endif
+				PostRender();
+			}
+			EndDebugDraw();
+		}
+
+		/// <summary>
+		/// Actually renders the scene.
+		/// </summary>
+		public void SceneRender()
 		{
 			if (_renderers.Length == 0)
 			{
@@ -427,7 +493,6 @@ namespace Nez
 				Core.GraphicsDevice.SetRenderTarget(_sceneRenderTarget);
 				Core.GraphicsDevice.Clear(ClearColor);
 			}
-
 
 			var lastRendererHadRenderTarget = false;
 			for (var i = 0; i < _renderers.Length; i++)
@@ -448,6 +513,51 @@ namespace Nez
 				_renderers.Buffer[i].Render(this);
 				lastRendererHadRenderTarget = _renderers.Buffer[i].RenderTexture != null;
 			}
+		}
+
+		[Conditional("DEBUG")]
+		void StartDebugUpdate()
+		{
+#if DEBUG
+			TimeRuler.Instance.StartFrame();
+			TimeRuler.Instance.BeginMark("update", Color.Green);
+#endif
+		}
+		[Conditional("DEBUG")]
+		void EndDebugUpdate()
+		{
+#if DEBUG
+			TimeRuler.Instance.EndMark("update");
+			DebugConsole.Instance.Update();
+#endif
+		}
+		[Conditional("DEBUG")]
+		void StartDebugDraw()
+		{
+#if DEBUG
+			TimeRuler.Instance.BeginMark("draw", Color.Gold);
+
+			frameCount++;
+			frameCountTime += Time.DeltaTime;
+			if(frameCountTime >= 1f)
+			{
+				var totalMem = (GC.GetTotalMemory(false) / 1048576f).ToString("F");
+				Core.Instance.Window.Title = string.Format("{0} {1}fps - {2}mb", Core.Instance.Title, frameCount, totalMem);
+				frameCount = 0;
+				frameCountTime = 0f;
+			}
+#endif
+		}
+		[Conditional("DEBUG")]
+		void EndDebugDraw()
+		{
+#if DEBUG
+			TimeRuler.Instance.EndMark("draw");
+			DebugConsole.Instance.Render();
+
+			if (!DebugConsole.Instance.IsOpen)
+				TimeRuler.Instance.Render();
+#endif
 		}
 
 		/// <summary>
@@ -757,7 +867,10 @@ namespace Nez
 		/// </summary>
 		/// <param name="callback">Callback.</param>
 		public void RequestScreenshot(Action<Texture2D> callback) => _screenshotRequestCallback = callback;
-
+		public static void StartTransition<T>(T sceneTransition) where T : SceneTransition
+		{
+			_sceneTransition = sceneTransition;
+		}
 		#endregion
 
 

@@ -64,7 +64,7 @@ namespace Nez
 		[Conditional("DEBUG")]
 		public static void DrawLine(Vector2 start, Vector2 end, Color color, float duration = 0f)
 		{
-			if (!Core.DebugRenderEnabled)
+			if (!ECScene.DebugRenderEnabled)
 				return;
 
 			_debugDrawItems.Add(new DebugDrawItem(start, end, color, duration));
@@ -73,7 +73,7 @@ namespace Nez
 		[Conditional("DEBUG")]
 		public static void DrawPixel(float x, float y, int size, Color color, float duration = 0f)
 		{
-			if (!Core.DebugRenderEnabled)
+			if (!ECScene.DebugRenderEnabled)
 				return;
 
 			_debugDrawItems.Add(new DebugDrawItem(x, y, size, color, duration));
@@ -82,7 +82,7 @@ namespace Nez
 		[Conditional("DEBUG")]
 		public static void DrawPixel(Vector2 position, int size, Color color, float duration = 0f)
 		{
-			if (!Core.DebugRenderEnabled)
+			if (!ECScene.DebugRenderEnabled)
 				return;
 
 			_debugDrawItems.Add(new DebugDrawItem(position.X, position.Y, size, color, duration));
@@ -91,7 +91,7 @@ namespace Nez
 		[Conditional("DEBUG")]
 		public static void DrawHollowRect(Rectangle rectangle, Color color, float duration = 0f)
 		{
-			if (!Core.DebugRenderEnabled)
+			if (!ECScene.DebugRenderEnabled)
 				return;
 
 			_debugDrawItems.Add(new DebugDrawItem(rectangle, color, duration));
@@ -100,7 +100,7 @@ namespace Nez
 		[Conditional("DEBUG")]
 		public static void DrawHollowBox(Vector2 center, int size, Color color, float duration = 0f)
 		{
-			if (!Core.DebugRenderEnabled)
+			if (!ECScene.DebugRenderEnabled)
 				return;
 
 			var halfSize = size * 0.5f;
@@ -112,7 +112,7 @@ namespace Nez
 		public static void DrawText(BitmapFont font, string text, Vector2 position, Color color, float duration = 0f,
 									float scale = 1f)
 		{
-			if (!Core.DebugRenderEnabled)
+			if (!ECScene.DebugRenderEnabled)
 				return;
 
 			_debugDrawItems.Add(new DebugDrawItem(font, text, position, color, duration, scale));
@@ -122,7 +122,7 @@ namespace Nez
 		public static void DrawText(NezSpriteFont font, string text, Vector2 position, Color color, float duration = 0f,
 									float scale = 1f)
 		{
-			if (!Core.DebugRenderEnabled)
+			if (!ECScene.DebugRenderEnabled)
 				return;
 
 			_debugDrawItems.Add(new DebugDrawItem(font, text, position, color, duration, scale));
@@ -144,7 +144,7 @@ namespace Nez
 		[Conditional("DEBUG")]
 		public static void DrawText(string text, Color color, float duration = 1f, float scale = 1f)
 		{
-			if (!Core.DebugRenderEnabled)
+			if (!ECScene.DebugRenderEnabled)
 				return;
 
 			_screenSpaceDebugDrawItems.Add(new DebugDrawItem(text, color, duration, scale));

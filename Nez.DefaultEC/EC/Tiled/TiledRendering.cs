@@ -211,7 +211,7 @@ namespace Nez.Tiled
 					continue;
 
                 // if we are not debug rendering, we only render Tile and Text types
-                if (!Core.DebugRenderEnabled)
+                if (ECScene.DebugRenderEnabled)
                 {
                     if (obj.ObjectType != TmxObjectType.Tile && obj.ObjectType != TmxObjectType.Text)
                         continue;
@@ -259,7 +259,7 @@ namespace Nez.Tiled
 						batcher.DrawString(Graphics.Instance.BitmapFont, obj.Text.Value, pos, obj.Text.Color, Mathf.Radians(obj.Rotation), Vector2.Zero, fontScale, SpriteEffects.None, layerDepth);
 						goto default;
 					default:
-                        if (Core.DebugRenderEnabled)
+                        if (ECScene.DebugRenderEnabled)
                             batcher.DrawString(Graphics.Instance.BitmapFont, $"{obj.Name} ({obj.Type})", pos - new Vector2(0, 15), Color.Black);
 						break;
 				}

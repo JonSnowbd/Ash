@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework;
 using Nez.Textures;
 using Nez.BitmapFonts;
 
-
 namespace Nez
 {
 	/// <summary>

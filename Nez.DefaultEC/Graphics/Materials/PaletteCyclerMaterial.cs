@@ -1,4 +1,6 @@
-﻿namespace Nez
+﻿using Microsoft.Xna.Framework;
+
+namespace Nez
 {
 	public class PaletteCyclerMaterial : Material<PaletteCyclerEffect>
 	{
@@ -7,7 +9,7 @@
 			Effect = new PaletteCyclerEffect();
 		}
 
-		public override void OnPreRender(object camera)
+		public override void OnPreRender(Matrix viewProj)
 		{
 			Effect.UpdateTime();
 		}

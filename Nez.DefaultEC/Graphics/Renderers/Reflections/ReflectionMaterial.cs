@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Nez.Textures;
 
 
@@ -20,19 +21,15 @@ namespace Nez
 		}
 
 
-		public override void OnPreRender(object camera)
+		public override void OnPreRender(Matrix viewProj)
 		{
-			if(camera is Camera cam)
+			// only update the Shader when the renderTarget changes. it will be swapped out whenever the GraphicsDevice resets.
+			if (_renderTarget == null || _renderTarget != RenderTexture.RenderTarget)
 			{
-				// only update the Shader when the renderTarget changes. it will be swapped out whenever the GraphicsDevice resets.
-				if (_renderTarget == null || _renderTarget != RenderTexture.RenderTarget)
-				{
-					_renderTarget = RenderTexture.RenderTarget;
-					Effect.RenderTexture = RenderTexture.RenderTarget;
-				}
-
-				Effect.MatrixTransform = cam.ViewProjectionMatrix;
+				_renderTarget = RenderTexture.RenderTarget;
+				Effect.RenderTexture = RenderTexture.RenderTarget;
 			}
+			Effect.MatrixTransform = viewProj;
 		}
 	}
 }

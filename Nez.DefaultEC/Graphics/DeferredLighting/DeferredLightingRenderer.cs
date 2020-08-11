@@ -202,7 +202,7 @@ namespace Nez.DeferredLighting
 				}
 			}
 
-			if (ShouldDebugRender && Core.DebugRenderEnabled)
+			if (ShouldDebugRender && ECScene.DebugRenderEnabled)
 				DebugRender(scene, scene.Camera);
 
 			EndRender();

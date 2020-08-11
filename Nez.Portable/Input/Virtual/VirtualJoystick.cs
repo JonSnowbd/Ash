@@ -72,6 +72,16 @@ namespace Nez
 			return this;
 		}
 
+		/// <summary>
+		/// adds mouse delta to this Virtual Joystick
+		/// </summary>
+		/// <param name="gamepadIndex">Gamepad index.</param>
+		public VirtualJoystick AddMouseDelta(float mult)
+		{
+			Nodes.Add(new MouseDelta(mult));
+			return this;
+		}
+
 
 		/// <summary>
 		/// adds GamePad right stick input to this VirtualJoystick
@@ -164,6 +174,16 @@ namespace Nez
 			public override Vector2 Value => Input.GamePads[GamepadIndex].GetRightStick(Deadzone);
 		}
 
+		public class MouseDelta : Node
+		{
+			float Mult;
+			public MouseDelta(float multiplier)
+			{
+				Mult = multiplier;
+			}
+
+			public override Vector2 Value => (Input.MousePositionDelta.ToVector2() * Mult);
+		}
 
 		public class GamePadDpad : Node
 		{

@@ -1,4 +1,5 @@
 using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 
@@ -305,7 +306,7 @@ namespace Nez
 		/// only be called if there is a non-null Effect.
 		/// </summary>
 		/// <param name="camera">Camera.</param>
-		public virtual void OnPreRender(object camera) // TODO: Boxing like this is horrible
+		public virtual void OnPreRender(Matrix viewProj) // TODO: Boxing like this is horrible
 		{
 		}
 

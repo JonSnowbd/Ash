@@ -72,6 +72,11 @@ namespace Nez.Console
 			Instance = new DebugConsole();
 		}
 
+		public static bool InputGuard()
+		{
+			return !DebugConsole.Instance.IsOpen;
+		}
+
 
 		public DebugConsole()
 		{

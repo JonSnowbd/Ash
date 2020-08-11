@@ -34,7 +34,7 @@ namespace Nez
 				}
 			}
 
-			if (ShouldDebugRender && Core.DebugRenderEnabled)
+			if (ShouldDebugRender && ECScene.DebugRenderEnabled)
 				DebugRender(scene, Camera);
 
 			EndRender();

@@ -11,7 +11,6 @@ using System.Collections;
 
 
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo("Nez.ImGui")]
-[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("Nez.Persistence")]
 
 
 namespace Nez
@@ -32,11 +31,6 @@ namespace Nez
 		/// enables/disables pausing when focus is lost. No update or render methods will be called if true when not in focus.
 		/// </summary>
 		public static bool PauseOnFocusLost = true;
-
-		/// <summary>
-		/// enables/disables debug rendering
-		/// </summary>
-		public static bool DebugRenderEnabled = false;
 
 		/// <summary>
 		/// global access to the graphicsDevice
@@ -82,14 +76,8 @@ namespace Nez
 		/// </summary>
 		public static Core _instance;
 
-#if DEBUG
-		public static long drawCalls;
-		TimeSpan _frameCounterElapsedTime = TimeSpan.Zero;
-		int _frameCounter = 0;
-		string _windowTitle;
-#endif
-
-        IScene _scene;
+		public string Title;
+		IScene _scene;
 		IScene _nextScene;
 
 		/// <summary>
@@ -130,9 +118,7 @@ namespace Nez
 
 		public Core(int width = 1280, int height = 720, bool isFullScreen = false, string windowTitle = "Nez", string contentDirectory = "Content")
 		{
-#if DEBUG
-			_windowTitle = windowTitle;
-#endif
+			Title = windowTitle;
 
 			_instance = this;
 			Emitter = new Emitter<CoreEvents>(new CoreEventsComparer());
@@ -238,10 +224,6 @@ namespace Nez
 						_globalManagers.Buffer[i].Update();
 				}
 
-				// read carefully:
-				// - we do not update the Scene while a SceneTransition is happening
-				// 		- unless it is SceneTransition that doesn't change Scenes (no reason not to update)
-				//		- or it is a SceneTransition that has already switched to the new Scene (the new Scene needs to do its thing)
 				_scene.Update();
 
 				if (_nextScene != null)
@@ -271,9 +253,6 @@ namespace Nez
 			if (_scene != null)
 			{
 				_scene.Render();
-
-				// render as usual if we dont have an active SceneTransition
-				_scene.PostRender();
 			}
 		}
 

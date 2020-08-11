@@ -83,7 +83,7 @@ namespace Nez
 					RenderLight(renderable, cam);
 			}
 
-			if (ShouldDebugRender && Core.DebugRenderEnabled)
+			if (ShouldDebugRender && ECScene.DebugRenderEnabled)
 				DebugRender(scene, cam);
 
 			EndRender();

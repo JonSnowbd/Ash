@@ -143,7 +143,8 @@ namespace Nez.Console
 			}
 			else
 			{
-				_drawCallTimer = Core.Schedule(delay, true, timer => { Debug.Log("Draw Calls: {0}", Core.drawCalls); });
+				// Todo: decide how draw calls is stored i guess?
+				//_drawCallTimer = Core.Schedule(delay, true, timer => { Debug.Log("Draw Calls: {0}", Core.drawCalls); });
 			}
 		}
 
@@ -263,8 +264,8 @@ namespace Nez.Console
 		static void Physics(float secondsToDisplay = 5f)
 		{
 			// store off the current state so we can reset it when we are done
-			var debugRenderState = Core.DebugRenderEnabled;
-			Core.DebugRenderEnabled = true;
+			var debugRenderState = ECScene.DebugRenderEnabled;
+			ECScene.DebugRenderEnabled = true;
 
 			var ticker = 0f;
 			Core.Schedule(0f, true, null, timer =>
@@ -274,7 +275,7 @@ namespace Nez.Console
 				if (ticker >= secondsToDisplay)
 				{
 					timer.Stop();
-					Core.DebugRenderEnabled = debugRenderState;
+					ECScene.DebugRenderEnabled = debugRenderState;
 				}
 			});
 
@@ -286,9 +287,9 @@ namespace Nez.Console
 		[Command("debug-render", "enables/disables debug rendering")]
 		static void DebugRender()
 		{
-			Core.DebugRenderEnabled = !Core.DebugRenderEnabled;
+			ECScene.DebugRenderEnabled = !ECScene.DebugRenderEnabled;
 			Instance.Log(string.Format("Debug rendering {0}",
-				Core.DebugRenderEnabled ? "enabled" : "disabled"));
+				ECScene.DebugRenderEnabled ? "enabled" : "disabled"));
 		}
 
 
