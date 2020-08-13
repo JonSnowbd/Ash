@@ -1,0 +1,3 @@
+- Guides
+
+    - [Installation](/installation/)
