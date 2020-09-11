@@ -99,7 +99,7 @@ namespace Nez
 
 		public DebugDrawItem(string text, Color color, float duration, float scale)
 		{
-			BitmapFont = Graphics.Instance.BitmapFont;
+			BitmapFont = Graphics.Instance.DevFont;
 			Text = text;
 			Color = color;
 			Scale = scale;

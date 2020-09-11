@@ -6,6 +6,7 @@ namespace Nez
 {
 	public class TwistEffect : Effect
 	{
+		public static readonly byte[] EffectBytes = EffectResource.GetFileResourceBytes("Content/nez/effects/Twist.mgfxo");
 		[Range(0, 2)]
 		public float Radius
 		{
@@ -56,7 +57,7 @@ namespace Nez
 		EffectParameter _offsetParam;
 
 
-		public TwistEffect() : base(Core.GraphicsDevice, EffectResource.TwistBytes)
+		public TwistEffect() : base(Core.GraphicsDevice, EffectBytes)
 		{
 			_radiusParam = Parameters["radius"];
 			_angleParam = Parameters["angle"];

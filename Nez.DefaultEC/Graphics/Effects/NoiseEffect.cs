@@ -5,6 +5,7 @@ namespace Nez
 {
 	public class NoiseEffect : Effect
 	{
+		public static readonly byte[] EffectBytes = EffectResource.GetFileResourceBytes("Content/nez/effects/Noise.mgfxo");
 		/// <summary>
 		/// Intensity of the noise. Defaults to 1.
 		/// </summary>
@@ -26,7 +27,7 @@ namespace Nez
 		EffectParameter _noiseParam;
 
 
-		public NoiseEffect() : base(Core.GraphicsDevice, EffectResource.NoiseBytes)
+		public NoiseEffect() : base(Core.GraphicsDevice, EffectBytes)
 		{
 			_noiseParam = Parameters["noise"];
 			_noiseParam.SetValue(_noise);

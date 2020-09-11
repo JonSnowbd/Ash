@@ -6,6 +6,8 @@ namespace Nez
 {
 	public class ReflectionEffect : Effect
 	{
+		public static readonly byte[] EffectBytes = EffectResource.GetFileResourceBytes("Content/nez/effects/Reflection.mgfxo");
+
 		/// <summary>
 		/// 0 - 1 range. Intensity of the reflection where 0 is none and 1 is full reflected
 		/// </summary>
@@ -58,7 +60,7 @@ namespace Nez
 		EffectParameter _normalMagnitudeParam;
 
 
-		public ReflectionEffect() : base(Core.GraphicsDevice, EffectResource.ReflectionBytes)
+		public ReflectionEffect() : base(Core.GraphicsDevice, EffectBytes)
 		{
 			_reflectionIntensityParam = Parameters["_reflectionIntensity"];
 			_renderTextureParam = Parameters["_renderTexture"];

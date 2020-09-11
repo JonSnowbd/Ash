@@ -193,8 +193,10 @@ namespace Nez
 
 			// prep the default Graphics system
 			GraphicsDevice = base.GraphicsDevice;
-			var font = Content.Load<BitmapFont>("nez://Nez.Content.NezDefaultBMFont.xnb");
-			Graphics.Instance = new Graphics(font);
+			var font = Content.LoadBitmapFont("./DefaultContent/Dev.fnt");
+			var fonts = Content.LoadBitmapFont("./DefaultContent/DevSmall.fnt");
+			var fontn = Content.LoadBitmapFont("./DefaultContent/DevNarrow.fnt");
+			Graphics.Instance = new Graphics(font, fonts, fontn);
 		}
 
 		protected override void Update(GameTime gameTime)

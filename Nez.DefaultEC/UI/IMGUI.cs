@@ -58,7 +58,7 @@ namespace Nez
 		static IMGUI()
 		{
 			_batcher = new Batcher(Core.GraphicsDevice);
-			_font = Graphics.Instance.BitmapFont;
+			_font = Graphics.Instance.DevFont;
 
 			var scale = FONT_LINE_HEIGHT / _font.LineHeight;
 			FONT_SCALE = new Vector2(scale, scale);

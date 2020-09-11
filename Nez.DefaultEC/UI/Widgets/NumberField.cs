@@ -203,7 +203,7 @@ namespace Nez.UI
 
         public NumberFieldStyle()
         {
-            Font = Graphics.Instance.BitmapFont;
+            Font = Graphics.Instance.DevFont;
         }
 
 

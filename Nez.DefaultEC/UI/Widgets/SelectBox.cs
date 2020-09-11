@@ -461,7 +461,7 @@ namespace Nez.UI
 
 		public SelectBoxStyle()
 		{
-			Font = Graphics.Instance.BitmapFont;
+			Font = Graphics.Instance.DevFont;
 		}
 
 		public SelectBoxStyle(BitmapFont font, Color fontColor, IDrawable background, ScrollPaneStyle scrollStyle,

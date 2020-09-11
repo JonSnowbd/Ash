@@ -1315,7 +1315,7 @@ namespace Nez.UI
 
 		public TextFieldStyle()
 		{
-			Font = Graphics.Instance.BitmapFont;
+			Font = Graphics.Instance.DevFont;
 		}
 
 
@@ -1324,7 +1324,7 @@ namespace Nez.UI
 		{
 			Background = background;
 			Cursor = cursor;
-			Font = font ?? Graphics.Instance.BitmapFont;
+			Font = font ?? Graphics.Instance.DevFont;
 			FontColor = fontColor;
 			Selection = selection;
 		}

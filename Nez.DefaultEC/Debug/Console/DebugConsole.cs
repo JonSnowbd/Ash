@@ -131,14 +131,14 @@ namespace Nez.Console
 			var maxWidth = Core.GraphicsDevice.PresentationParameters.BackBufferWidth - 40;
 			var screenHeight = Core.GraphicsDevice.PresentationParameters.BackBufferHeight;
 
-			while (Graphics.Instance.BitmapFont.MeasureString(str).X * RenderScale > maxWidth)
+			while (Graphics.Instance.DevFont.MeasureString(str).X * RenderScale > maxWidth)
 			{
 				var split = -1;
 				for (var i = 0; i < str.Length; i++)
 				{
 					if (str[i] == ' ')
 					{
-						if (Graphics.Instance.BitmapFont.MeasureString(str.Substring(0, i)).X * RenderScale <= maxWidth)
+						if (Graphics.Instance.DevFont.MeasureString(str.Substring(0, i)).X * RenderScale <= maxWidth)
 							split = i;
 						else
 							break;
@@ -540,7 +540,7 @@ namespace Nez.Console
 
 			var commandTextPosition =
 				commandEntryRect.Location.ToVector2() + new Vector2(TEXT_PADDING_X, TEXT_PADDING_Y);
-			Graphics.Instance.Batcher.DrawString(Graphics.Instance.BitmapFont, commandLineString, commandTextPosition,
+			Graphics.Instance.Batcher.DrawString(Graphics.Instance.DevFont, commandLineString, commandTextPosition,
 				Color.White, 0, Vector2.Zero, new Vector2(RenderScale), SpriteEffects.None, 0);
 
 			if (_drawCommands.Count > 0)
@@ -560,7 +560,7 @@ namespace Nez.Console
 					var position = new Vector2(HORIZONTAL_PADDING + TEXT_PADDING_X,
 						yPosFirstLine - yPosCurrentLineAddition);
 					var color = _drawCommands[i].IndexOf(">") == 0 ? Color.Yellow : Color.White;
-					Graphics.Instance.Batcher.DrawString(Graphics.Instance.BitmapFont, _drawCommands[i], position,
+					Graphics.Instance.Batcher.DrawString(Graphics.Instance.DevFont, _drawCommands[i], position,
 						color, 0, Vector2.Zero, new Vector2(RenderScale), SpriteEffects.None, 0);
 				}
 			}

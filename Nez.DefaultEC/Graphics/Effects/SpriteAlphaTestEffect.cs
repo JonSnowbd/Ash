@@ -6,6 +6,8 @@ namespace Nez
 {
 	public class SpriteAlphaTestEffect : Effect
 	{
+		public static readonly byte[] EffectBytes = EffectResource.GetFileResourceBytes("Content/nez/effects/SpriteAlphaTest.mgfxo");
+
 		public enum AlphaTestCompareFunction
 		{
 			Greater,
@@ -51,7 +53,7 @@ namespace Nez
 		EffectParameter _alphaTestParam;
 
 
-		public SpriteAlphaTestEffect() : base(Core.GraphicsDevice, EffectResource.SpriteAlphaTestBytes)
+		public SpriteAlphaTestEffect() : base(Core.GraphicsDevice, EffectBytes)
 		{
 			_alphaTestParam = Parameters["_alphaTest"];
 			UpdateEffectParameter();

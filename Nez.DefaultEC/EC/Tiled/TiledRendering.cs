@@ -255,12 +255,12 @@ namespace Nez.Tiled
 						batcher.DrawPoints(pos, points, objGroup.Color, obj.ObjectType == TmxObjectType.Polygon);
 						goto default;
 					case TmxObjectType.Text:
-						var fontScale = (float)obj.Text.PixelSize / Graphics.Instance.BitmapFont.LineHeight;
-						batcher.DrawString(Graphics.Instance.BitmapFont, obj.Text.Value, pos, obj.Text.Color, Mathf.Radians(obj.Rotation), Vector2.Zero, fontScale, SpriteEffects.None, layerDepth);
+						var fontScale = (float)obj.Text.PixelSize / Graphics.Instance.DevFont.LineHeight;
+						batcher.DrawString(Graphics.Instance.DevFont, obj.Text.Value, pos, obj.Text.Color, Mathf.Radians(obj.Rotation), Vector2.Zero, fontScale, SpriteEffects.None, layerDepth);
 						goto default;
 					default:
                         if (ECScene.DebugRenderEnabled)
-                            batcher.DrawString(Graphics.Instance.BitmapFont, $"{obj.Name} ({obj.Type})", pos - new Vector2(0, 15), Color.Black);
+                            batcher.DrawString(Graphics.Instance.DevFont, $"{obj.Name} ({obj.Type})", pos - new Vector2(0, 15), Color.Black);
 						break;
 				}
 			}

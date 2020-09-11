@@ -59,7 +59,7 @@ namespace Nez
 		readonly Queue<float> _sampleBuffer = new Queue<float>();
 
 
-		public FramesPerSecondCounter() : this(Graphics.Instance.BitmapFont, Color.White)
+		public FramesPerSecondCounter() : this(Graphics.Instance.DevFont, Color.White)
 		{ }
 
 		public FramesPerSecondCounter(BitmapFont font, Color color,

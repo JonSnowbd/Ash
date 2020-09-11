@@ -79,7 +79,7 @@ namespace Nez.UI
 		{ }
 
 
-		public Label(string text) : this(text, Graphics.Instance.BitmapFont)
+		public Label(string text) : this(text, Graphics.Instance.DevFont)
 		{ }
 
 
@@ -376,13 +376,13 @@ namespace Nez.UI
 
 		public LabelStyle()
 		{
-			Font = Graphics.Instance.BitmapFont;
+			Font = Graphics.Instance.DevFont;
 		}
 
 
 		public LabelStyle(BitmapFont font, Color fontColor)
 		{
-			Font = font ?? Graphics.Instance.BitmapFont;
+			Font = font ?? Graphics.Instance.DevFont;
 			FontColor = fontColor;
 		}
 

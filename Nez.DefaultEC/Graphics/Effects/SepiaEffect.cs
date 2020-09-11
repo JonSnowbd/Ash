@@ -6,6 +6,8 @@ namespace Nez
 {
 	public class SepiaEffect : Effect
 	{
+		public static readonly byte[] EffectBytes = EffectResource.GetFileResourceBytes("Content/nez/effects/Sepia.mgfxo");
+
 		/// <summary>
 		/// multiplied by the grayscale value for the final output. Defaults to 1.2f, 1.0f, 0.8f
 		/// </summary>
@@ -25,7 +27,7 @@ namespace Nez
 		EffectParameter _sepiaToneParam;
 
 
-		public SepiaEffect() : base(Core.GraphicsDevice, EffectResource.SepiaBytes)
+		public SepiaEffect() : base(Core.GraphicsDevice, EffectBytes)
 		{
 			_sepiaToneParam = Parameters["_sepiaTone"];
 			_sepiaToneParam.SetValue(_sepiaTone);

@@ -46,7 +46,7 @@ namespace Nez
 
 		public MarkupText()
 		{
-			SetFont("default", Graphics.Instance.BitmapFont);
+			SetFont("default", Graphics.Instance.DevFont);
 		}
 
 

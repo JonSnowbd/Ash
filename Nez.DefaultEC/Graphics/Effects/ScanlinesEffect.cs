@@ -5,6 +5,8 @@ namespace Nez
 {
 	public class ScanlinesEffect : Effect
 	{
+		public static readonly byte[] EffectBytes = EffectResource.GetFileResourceBytes("Content/nez/effects/Scanlines.mgfxo");
+
 		[Range(0.001f, 1f, 0.001f)]
 		public float Attenuation
 		{
@@ -41,7 +43,7 @@ namespace Nez
 		EffectParameter _linesFactorParam;
 
 
-		public ScanlinesEffect() : base(Core.GraphicsDevice, EffectResource.ScanlinesBytes)
+		public ScanlinesEffect() : base(Core.GraphicsDevice, EffectBytes)
 		{
 			_attenuationParam = Parameters["_attenuation"];
 			_linesFactorParam = Parameters["_linesFactor"];

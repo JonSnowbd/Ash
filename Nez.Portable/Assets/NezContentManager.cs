@@ -1,17 +1,21 @@
-﻿using System;
-using System.Threading;
-using System.Text;
-using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
-using System.Threading.Tasks;
-using System.IO;
-using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Nez.BitmapFonts;
+using Nez.Ogmo;
 using Nez.Sprites;
 using Nez.Textures;
 using Nez.Tiled;
-using Microsoft.Xna.Framework.Audio;
-using Nez.BitmapFonts;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 
 namespace Nez.Systems
@@ -25,7 +29,7 @@ namespace Nez.Systems
 
 		List<IDisposable> _disposableAssets;
 
-		List<IDisposable> DisposableAssets
+		public List<IDisposable> DisposableAssets
 		{
 			get
 			{
@@ -39,33 +43,18 @@ namespace Nez.Systems
 			}
 		}
 
-#if FNA
-		Dictionary<string, object> _loadedAssets;
-		Dictionary<string, object> LoadedAssets
-		{
-			get
-			{
-				if (_loadedAssets == null)
-				{
-					var fieldInfo = ReflectionUtils.GetFieldInfo(typeof(ContentManager), "loadedAssets");
-					_loadedAssets = fieldInfo.GetValue(this) as Dictionary<string, object>;
-				}
-				return _loadedAssets;
-			}
-		}
-#endif
-
-
 		public NezContentManager(IServiceProvider serviceProvider, string rootDirectory) : base(serviceProvider, rootDirectory)
-		{}
+		{ }
 
 		public NezContentManager(IServiceProvider serviceProvider) : base(serviceProvider)
-		{}
+		{ }
 
 		public NezContentManager() : base(((Game)Core._instance).Services, ((Game)Core._instance).Content.RootDirectory)
-		{}
+		{ }
 
 		#region Strongly Typed Loaders
+
+
 
 		/// <summary>
 		/// loads a Texture2D either from xnb or directly from a png/jpg. Note that xnb files should not contain the .xnb file
@@ -254,6 +243,118 @@ namespace Nez.Systems
 			return effect;
 		}
 
+		/// <summary>
+		/// Attempts to instance a json file into the given type using Newtonsoft's Json.Net.
+		/// Takes an optional context object that can be accessed through OnDeserializing/OnDeserialized
+		/// attribute method's StreamingContext. Shortcircuits and returns a cached version of the json file
+		/// if it has already been loaded.
+		/// </summary>
+		/// <typeparam name="T">The type to be deserialized into.</typeparam>
+		/// <param name="name">The path to the .json asset file.</param>
+		/// <param name="context">An optional context to be passed into the deserializer.</param>
+		/// <returns></returns>
+		public T LoadJson<T>(string name, object context = null, JsonConverter<T> converter = null)
+		{
+			if (LoadedAssets.TryGetValue(name, out var asset))
+			{
+				if (asset is T item)
+					return item;
+			}
+
+			using (var stream = Path.IsPathRooted(name) ? File.OpenRead(name) : TitleContainer.OpenStream(name))
+			{
+				using (var reader = new StreamReader(stream))
+				{
+					JsonSerializer ser = new JsonSerializer();
+					if (context != null)
+					{
+						ser.Context = new StreamingContext(StreamingContextStates.Other, context);
+					}
+
+					T item;
+
+					if (converter == null)
+					{
+						item = (T)ser.Deserialize(reader, typeof(T));
+					}
+					else
+					{
+						var jsonReader = new JsonTextReader(reader);
+						var jObject = JObject.Load(jsonReader);
+						item = (T)converter.ReadJson(jObject.CreateReader(), typeof(T), null, ser);
+					}
+
+					LoadedAssets[name] = item;
+					return item;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Attempts to load a json file into the given object using Newtonsoft's Json.Net.
+		/// Takes an optional context object that can be accessed through OnDeserializing/OnDeserialized
+		/// attribute method's StreamingContext. Note that this is not cached in the content manager.
+		/// </summary>
+		/// <typeparam name="T">The type to be deserialized into.</typeparam>
+		/// <param name="outObject">A reference to the Object that needs to be populated.</param>
+		/// <param name="name">The path to the .json asset file.</param>
+		/// <param name="context">An optional context to be passed into the deserializer.</param>
+		/// <returns></returns>
+		public void LoadJson<T>(string name, ref T outObject, object context = null, JsonConverter<T> converter = null)
+		{
+			using (var stream = Path.IsPathRooted(name) ? File.OpenRead(name) : TitleContainer.OpenStream(name))
+			{
+				using (var reader = new StreamReader(stream))
+				{
+					JsonSerializer ser = new JsonSerializer();
+					if (context != null)
+					{
+						ser.Context = new StreamingContext(StreamingContextStates.Other, context);
+					}
+					if (converter == null)
+					{
+						ser.Populate(reader, outObject);
+					}
+					else
+					{
+						var jsonReader = new JsonTextReader(reader);
+						var jObject = JObject.Load(jsonReader);
+						var result = (T)converter.ReadJson(jObject.CreateReader(), typeof(T), outObject, ser);
+						outObject = result;
+					}
+
+					return;
+				}
+			}
+		}
+
+		public OgmoProject LoadOgmoProject(string name)
+		{
+			if (string.IsNullOrEmpty(Path.GetExtension(name)))
+				name = Path.ChangeExtension(name, "ogmo");
+
+			if (LoadedAssets.TryGetValue(name, out var asset))
+			{
+				if (asset is OgmoProject project)
+					return project;
+			}
+
+			using (var stream = Path.IsPathRooted(name) ? File.OpenRead(name) : TitleContainer.OpenStream(name))
+			{
+				using (var reader = new StreamReader(stream))
+				{
+					JsonSerializer ser = new JsonSerializer()
+					{
+						Context = new StreamingContext(StreamingContextStates.Other, name)
+					};
+					var proj = (OgmoProject)ser.Deserialize(reader, typeof(OgmoProject));
+					LoadedAssets[name] = proj;
+					proj.ParentContentManager = this;
+					return proj;
+				}
+			}
+		}
+
 		#endregion
 
 		/// <summary>
@@ -433,7 +534,7 @@ namespace Nez.Systems
 	sealed class NezGlobalContentManager : NezContentManager
 	{
 		public NezGlobalContentManager(IServiceProvider serviceProvider, string rootDirectory) : base(serviceProvider, rootDirectory)
-		{}
+		{ }
 
 		/// <summary>
 		/// override that will load embedded resources if they have the "nez://" prefix

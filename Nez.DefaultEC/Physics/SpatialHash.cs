@@ -202,7 +202,7 @@ namespace Nez.Spatial
 			{
 				var textPosition = new Vector2((float) x * (float) _cellSize + 0.5f * _cellSize,
 					(float) y * (float) _cellSize + 0.5f * _cellSize);
-				ECDebug.DrawText(Graphics.Instance.BitmapFont, cellCount.ToString(), textPosition, Color.DarkGreen,
+				ECDebug.DrawText(Graphics.Instance.DevFont, cellCount.ToString(), textPosition, Color.DarkGreen,
 					secondsToDisplay, textScale);
 			}
 		}

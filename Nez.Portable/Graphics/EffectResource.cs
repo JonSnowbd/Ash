@@ -7,70 +7,8 @@ namespace Nez
 {
 	public static class EffectResource
 	{
-		// sprite effects
-		public static byte[] SpriteBlinkEffectBytes => GetFileResourceBytes("Content/nez/effects/SpriteBlinkEffect.mgfxo");
-
-		public static byte[] SpriteLinesEffectBytes => GetFileResourceBytes("Content/nez/effects/SpriteLines.mgfxo");
-
-		public static byte[] SpriteAlphaTestBytes => GetFileResourceBytes("Content/nez/effects/SpriteAlphaTest.mgfxo");
-
-		public static byte[] CrosshatchBytes => GetFileResourceBytes("Content/nez/effects/Crosshatch.mgfxo");
-
-		public static byte[] NoiseBytes => GetFileResourceBytes("Content/nez/effects/Noise.mgfxo");
-
-		public static byte[] TwistBytes => GetFileResourceBytes("Content/nez/effects/Twist.mgfxo");
-
-		public static byte[] DotsBytes => GetFileResourceBytes("Content/nez/effects/Dots.mgfxo");
-
-		public static byte[] DissolveBytes => GetFileResourceBytes("Content/nez/effects/Dissolve.mgfxo");
-
-		// post processor effects
-		public static byte[] BloomCombineBytes => GetFileResourceBytes("Content/nez/effects/BloomCombine.mgfxo");
-
-		public static byte[] BloomExtractBytes => GetFileResourceBytes("Content/nez/effects/BloomExtract.mgfxo");
-
-		public static byte[] GaussianBlurBytes => GetFileResourceBytes("Content/nez/effects/GaussianBlur.mgfxo");
-
-		public static byte[] VignetteBytes => GetFileResourceBytes("Content/nez/effects/Vignette.mgfxo");
-
-		public static byte[] LetterboxBytes => GetFileResourceBytes("Content/nez/effects/Letterbox.mgfxo");
-
-		public static byte[] HeatDistortionBytes => GetFileResourceBytes("Content/nez/effects/HeatDistortion.mgfxo");
-
-		public static byte[] SpriteLightMultiplyBytes => GetFileResourceBytes("Content/nez/effects/SpriteLightMultiply.mgfxo");
-
-		public static byte[] PixelGlitchBytes => GetFileResourceBytes("Content/nez/effects/PixelGlitch.mgfxo");
-
-		public static byte[] StencilLightBytes => GetFileResourceBytes("Content/nez/effects/StencilLight.mgfxo");
-
-		// deferred lighting
-		public static byte[] DeferredSpriteBytes => GetFileResourceBytes("Content/nez/effects/DeferredSprite.mgfxo");
-
-		public static byte[] DeferredLightBytes => GetFileResourceBytes("Content/nez/effects/DeferredLighting.mgfxo");
-
-		// forward lighting
-		public static byte[] ForwardLightingBytes => GetFileResourceBytes("Content/nez/effects/ForwardLighting.mgfxo");
-
-		public static byte[] PolygonLightBytes => GetFileResourceBytes("Content/nez/effects/PolygonLight.mgfxo");
-
-		// scene transitions
-		public static byte[] SquaresTransitionBytes => GetFileResourceBytes("Content/nez/effects/transitions/Squares.mgfxo");
-
 		// sprite or post processor effects
-		public static byte[] SpriteEffectBytes => GetMonoGameEmbeddedResourceBytes("Microsoft.Xna.Framework.Graphics.Effect.Resources.SpriteEffect.ogl.mgfxo");
-
-		public static byte[] MultiTextureOverlayBytes => GetFileResourceBytes("Content/nez/effects/MultiTextureOverlay.mgfxo");
-
-		public static byte[] ScanlinesBytes => GetFileResourceBytes("Content/nez/effects/Scanlines.mgfxo");
-
-		public static byte[] ReflectionBytes => GetFileResourceBytes("Content/nez/effects/Reflection.mgfxo");
-
-		public static byte[] GrayscaleBytes => GetFileResourceBytes("Content/nez/effects/Grayscale.mgfxo");
-
-		public static byte[] SepiaBytes => GetFileResourceBytes("Content/nez/effects/Sepia.mgfxo");
-
-		public static byte[] PaletteCyclerBytes => GetFileResourceBytes("Content/nez/effects/PaletteCycler.mgfxo");
-
+		
 
 		/// <summary>
 		/// gets the raw byte[] from an EmbeddedResource

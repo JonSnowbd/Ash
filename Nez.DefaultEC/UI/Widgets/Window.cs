@@ -366,13 +366,13 @@ namespace Nez.UI
 
 		public WindowStyle()
 		{
-			TitleFont = Graphics.Instance.BitmapFont;
+			TitleFont = Graphics.Instance.DevFont;
 		}
 
 
 		public WindowStyle(BitmapFont titleFont, Color titleFontColor, IDrawable background)
 		{
-			TitleFont = titleFont ?? Graphics.Instance.BitmapFont;
+			TitleFont = titleFont ?? Graphics.Instance.DevFont;
 			Background = background;
 			TitleFontColor = titleFontColor;
 		}

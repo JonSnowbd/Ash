@@ -11,6 +11,8 @@ namespace Nez
 	/// </summary>
 	public class GaussianBlurEffect : Effect
 	{
+		public static readonly byte[] EffectBytes = EffectResource.GetFileResourceBytes("Content/nez/effects/GaussianBlur.mgfxo");
+
 		/// <summary>
 		/// amount to blur. A range of 0.5 - 6 works well. Defaults to 2.
 		/// </summary>
@@ -82,7 +84,7 @@ namespace Nez
 		EffectParameter _blurOffsetsParam;
 
 
-		public GaussianBlurEffect() : base(Core.GraphicsDevice, EffectResource.GaussianBlurBytes)
+		public GaussianBlurEffect() : base(Core.GraphicsDevice, EffectBytes)
 		{
 			_blurWeightsParam = Parameters["_sampleWeights"];
 			_blurOffsetsParam = Parameters["_sampleOffsets"];

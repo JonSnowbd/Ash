@@ -102,7 +102,7 @@ namespace Nez.UI
 
 		public CheckBoxStyle()
 		{
-			Font = Graphics.Instance.BitmapFont;
+			Font = Graphics.Instance.DevFont;
 		}
 
 
@@ -110,7 +110,7 @@ namespace Nez.UI
 		{
 			CheckboxOff = checkboxOff;
 			CheckboxOn = checkboxOn;
-			Font = font ?? Graphics.Instance.BitmapFont;
+			Font = font ?? Graphics.Instance.DevFont;
 			FontColor = fontColor;
 		}
 	}

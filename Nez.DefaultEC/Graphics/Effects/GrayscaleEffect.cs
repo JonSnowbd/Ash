@@ -5,7 +5,8 @@ namespace Nez
 {
 	public class GrayscaleEffect : Effect
 	{
-		public GrayscaleEffect() : base(Core.GraphicsDevice, EffectResource.GrayscaleBytes)
+		public static readonly byte[] EffectBytes = EffectResource.GetFileResourceBytes("Content/nez/effects/Grayscale.mgfxo");
+		public GrayscaleEffect() : base(Core.GraphicsDevice, EffectBytes)
 		{
 		}
 	}

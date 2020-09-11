@@ -26,6 +26,7 @@ a git repo to have a nice and safe VCS.
 ----
 
 ### <small>2.</small> Add Nez & Your Game
+
 ```bash
 $ git submodule add --branch py-2.0 https://github.com/JonSnowbd/Nez.git
 $ mkdir GameSource
@@ -97,6 +98,7 @@ Then we add the packages for Monogame and Nez!
 
 
 So that the entire file looks something like this
+
 ```xml
 <Project Sdk="Microsoft.NET.Sdk">
 

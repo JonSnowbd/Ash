@@ -6,10 +6,11 @@ namespace Nez
 {
 	public class SpriteEffect : Effect
 	{
+		public static byte[] EffectBytes => EffectResource.GetMonoGameEmbeddedResourceBytes("Microsoft.Xna.Framework.Graphics.Effect.Resources.SpriteEffect.ogl.mgfxo");
 		EffectParameter _matrixTransformParam;
 
 
-		public SpriteEffect() : base(Core.GraphicsDevice, EffectResource.SpriteEffectBytes)
+		public SpriteEffect() : base(Core.GraphicsDevice, EffectBytes)
 		{
 			_matrixTransformParam = Parameters["MatrixTransform"];
 		}

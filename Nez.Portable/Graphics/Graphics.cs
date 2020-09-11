@@ -20,7 +20,9 @@ namespace Nez
 		/// <summary>
 		/// default font is loaded up and stored here for easy access. Nez uses it for the DebugConsole
 		/// </summary>
-		public BitmapFont BitmapFont;
+		public BitmapFont DevFont;
+		public BitmapFont DevFontSmall;
+		public BitmapFont DevFontNarrow;
 
 		/// <summary>
 		/// A sprite used to draw rectangles, lines, circles, etc. 
@@ -29,21 +31,22 @@ namespace Nez
 		/// </summary>
 		public Sprite PixelTexture;
 
-
 		public Graphics()
 		{
 		}
 
-
-		public Graphics(BitmapFont font)
+		public Graphics(BitmapFont font, BitmapFont small, BitmapFont narrow)
 		{
 			Batcher = new Batcher(Core.GraphicsDevice);
-			BitmapFont = font;
+
+			DevFont = font;
+			DevFontSmall = small;
+			DevFontNarrow = narrow;
 
 			// the bottom/right pixel is white on the default font so we'll use that for the pixelTexture
 			var fontTex =
-				BitmapFont.Textures[
-					BitmapFont.DefaultCharacter.TexturePage]; // bitmapFont.defaultCharacterRegion.sprite.texture2D;
+				DevFont.Textures[
+					DevFont.DefaultCharacter.TexturePage]; // bitmapFont.defaultCharacterRegion.sprite.texture2D;
 			PixelTexture = new Sprite(fontTex, fontTex.Width - 1, fontTex.Height - 1, 1, 1);
 		}
 

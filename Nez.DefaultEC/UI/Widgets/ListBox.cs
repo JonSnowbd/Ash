@@ -404,7 +404,7 @@ namespace Nez.UI
 
 		public ListBoxStyle()
 		{
-			Font = Graphics.Instance.BitmapFont;
+			Font = Graphics.Instance.DevFont;
 		}
 
 

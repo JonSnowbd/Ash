@@ -123,18 +123,18 @@ namespace Nez.UI
 
 		public TextButtonStyle()
 		{
-			Font = Graphics.Instance.BitmapFont;
+			Font = Graphics.Instance.DevFont;
 		}
 
 
 		public TextButtonStyle(IDrawable up, IDrawable down, IDrawable over, BitmapFont font) : base(up, down, over)
 		{
-			Font = font ?? Graphics.Instance.BitmapFont;
+			Font = font ?? Graphics.Instance.DevFont;
 		}
 
 
 		public TextButtonStyle(IDrawable up, IDrawable down, IDrawable over) : this(up, down, over,
-			Graphics.Instance.BitmapFont)
+			Graphics.Instance.DevFont)
 		{
 		}
 

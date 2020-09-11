@@ -59,7 +59,7 @@ namespace Nez
 		Vector2 _size;
 
 
-		public TextComponent() : this(Graphics.Instance.BitmapFont, "", Vector2.Zero, Color.White)
+		public TextComponent() : this(Graphics.Instance.DevFont, "", Vector2.Zero, Color.White)
 		{
 		}
 

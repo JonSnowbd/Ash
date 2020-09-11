@@ -150,7 +150,7 @@ namespace Nez.UI
 
 		public ImageTextButtonStyle()
 		{
-			Font = Graphics.Instance.BitmapFont;
+			Font = Graphics.Instance.DevFont;
 		}
 
 

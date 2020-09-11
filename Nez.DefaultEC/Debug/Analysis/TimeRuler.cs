@@ -538,7 +538,7 @@ namespace Nez.Analysis
 
 			// Gets Batcher, SpriteFont, and WhiteTexture from Batcher.
 			var batcher = Graphics.Instance.Batcher;
-			var font = Graphics.Instance.BitmapFont;
+			var font = Graphics.Instance.DevFont;
 
 			// Adjust size and position based of number of bars we should draw.
 			var height = 0;
