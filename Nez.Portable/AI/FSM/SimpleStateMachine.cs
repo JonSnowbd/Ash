@@ -6,8 +6,7 @@ namespace Nez.AI.FSM
 {
 	/// <summary>
 	/// Simple state machine with an enum constraint. There are some rules you must follow when using this:
-	/// - before update is called initialState must be set (use the constructor or onAddedToEntity)
-	/// - if you implement update in your subclass you must call base.update()
+	/// - before update is called initialState must be set
 	/// 
 	/// Note: if you use an enum as the contraint you can avoid allocations/boxing in Mono by doing what the Core
 	/// Emitter does for its enum: pass in a IEqualityComparer to the constructor.

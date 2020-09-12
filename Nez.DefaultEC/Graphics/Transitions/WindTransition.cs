@@ -49,7 +49,7 @@ namespace Nez
 			_destinationRect = PreviousSceneRender.Bounds;
 
 			// load Effect and set defaults
-			_windEffect = Core.Content.LoadEffect("Content/nez/effects/transitions/Wind.mgfxo");
+			_windEffect = Core.Content.LoadEffect("./DefaultContent/effects/transitions/Wind.mgfxo");
 			Size = 0.3f;
 			WindSegments = 100;
 		}

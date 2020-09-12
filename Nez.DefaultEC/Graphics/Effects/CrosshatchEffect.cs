@@ -5,7 +5,7 @@ namespace Nez
 {
 	public class CrosshatchEffect : Effect
 	{
-		public static readonly byte[] EffectBytes = EffectResource.GetFileResourceBytes("Content/nez/effects/Crosshatch.mgfxo");
+		public static readonly byte[] EffectBytes = EffectResource.GetFileResourceBytes("./DefaultContent/effects/Crosshatch.mgfxo");
 
 		/// <summary>
 		/// size in pixels of the crosshatch. Should be an even number because the half size is also required. Defaults to 16.

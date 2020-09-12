@@ -65,7 +65,7 @@ namespace Nez
 			_destinationRect = PreviousSceneRender.Bounds;
 
 			// load Effect and set defaults
-			_squaresEffect = Core.Content.LoadEffect("Content/nez/effects/transitions/Squares.mgfxo");
+			_squaresEffect = Core.Content.LoadEffect("./DefaultContent/effects/transitions/Squares.mgfxo");
 			SquareColor = Color.Black;
 			Smoothness = 0.5f;
 

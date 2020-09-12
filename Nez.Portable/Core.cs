@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Nez.BitmapFonts;
 using Nez.Systems;
 using Nez.Textures;
 using Nez.Timers;
@@ -9,13 +8,9 @@ using Nez.Tweens;
 using System;
 using System.Collections;
 
-
-[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("Nez.ImGui")]
-
-
 namespace Nez
 {
-	public class Core : Game
+    public class Core : Game
 	{
 		/// <summary>
 		/// core emitter. emits only Core level events.
@@ -65,6 +60,12 @@ namespace Nez
 		/// </summary>
 		/// <value>The services.</value>
 		public new static GameServiceContainer Services => ((Game) _instance).Services;
+
+		/// <summary>
+		/// A lightweight list of <c>System.Action</c> delegates that are ran
+		/// before Scene updates, and after Input updates.
+		/// </summary>
+		public static FastList<Action> UpdateHooks = new FastList<Action>();
 
 		/// <summary>
 		/// provides access to the single Core/Game instance
@@ -211,6 +212,11 @@ namespace Nez
 			Time.Update((float) gameTime.ElapsedGameTime.TotalSeconds);
 			Input.Update();
 
+			for (int i = 0; i < UpdateHooks.Length; i++)
+			{
+				UpdateHooks[i]();
+			}
+
 			if (ExitOnEscapeKeypress &&
 			    (Input.IsKeyDown(Keys.Escape) || Input.GamePads[0].IsButtonReleased(Buttons.Back)))
 			{
@@ -239,12 +245,6 @@ namespace Nez
 					_scene.Begin();
 				}
 			}
-
-#if FNA
-			// MonoGame only updates old-school XNA Components in Update which we dont care about. FNA's core FrameworkDispatcher needs
-			// Update called though so we do so here.
-			FrameworkDispatcher.Update();
-#endif
 		}
 
 		protected override void Draw(GameTime gameTime)
