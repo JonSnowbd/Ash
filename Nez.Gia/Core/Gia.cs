@@ -1,12 +1,8 @@
-﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-
-namespace Nez
+﻿namespace Nez
 {
     public static partial class Gia
     {
-        internal static GiaScene InProgress;
+        internal static GiaScene BeingConstructed;
 
         /// <summary>
         /// Returns the current Core.Scene as a GiaScene. If it is not found, instead it will look for a GiaScene currently being constructed.
@@ -17,10 +13,9 @@ namespace Nez
             {
                 var current = Core.Scene as GiaScene;
                 if (current == null)
-                    return InProgress;
+                    return BeingConstructed;
                 return current; 
             } 
         }
-
     }
 }

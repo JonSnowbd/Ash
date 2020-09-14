@@ -41,7 +41,7 @@ namespace Coga
 				_handle_up(Parent.Manager);
 			}
 			// Hover management.
-			var IsHovered = Parent.Manager.GetFocus() == Parent;
+			var IsHovered = Parent.Manager.GetHover() == Parent;
 
 			if (IsHovered == false && WasHoveredLastFrame == true)
 				OnUnhover?.Invoke(Parent);
@@ -62,7 +62,7 @@ namespace Coga
 			}
 
 			// Clicking related input.
-			if (Parent.Manager.GetFocus() == Parent)
+			if (Parent.Manager.GetHover() == Parent)
 			{
 				_update(Parent.Manager, deltaTime);
 			}
@@ -105,7 +105,7 @@ namespace Coga
                 if ((Vector2.Distance(coga.MousePosition, mouseInitial)) >= MouseDragMinimumDistance)
 				{
 					OnDragStart?.Invoke(Parent);
-					Parent.Manager.LockFocus();
+					Parent.Manager.LockHover();
 					OnDrag?.Invoke(Parent, (coga.MousePosition - mouseInitial));
 					isDragging = true;
 					return;
@@ -130,7 +130,7 @@ namespace Coga
 			if (isDragging)
 			{
 				OnDragEnd?.Invoke(Parent);
-				coga.UnlockFocus();
+				coga.UnlockHover();
 			}
 			else
 			{

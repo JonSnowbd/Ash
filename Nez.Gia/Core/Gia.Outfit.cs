@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Nez.SpriteSystem;
+using Nez.UI;
+using Nez.UIComponents;
 using Nez.VisibilitySystem;
 
 namespace Nez
@@ -46,6 +48,20 @@ namespace Nez
                     entity.Set(new SpriteC(texture, Color.White, source));
                     entity.Set(new Transform(position.X, position.Y));
                 }
+            }
+
+            /// <returns>A tuple containing the final entity, and the root UI node to build off.</returns>
+            public static (Entity, UIComponent) UI(Vector2 position, Vector2 size, bool screenSpace = true)
+            {
+                var entity = Gia.Current.World.CreateEntity();
+
+                var ui = new UserInterface((int)size.X, (int)size.Y);
+                var aa = new AABB(position.X, position.Y, size.X, size.Y);
+
+                entity.Set(ui);
+                entity.Set(aa);
+
+                return (entity, ui.Root);
             }
         }
     }

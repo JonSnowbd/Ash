@@ -59,7 +59,7 @@ namespace Nez.VisibilitySystem
                 {
                     if (Gia.Debug.Enabled)
                     {
-                        Gia.Debug.DeferHollowRectangle(aa.Bounds, Gia.Theme.MainThemeColor);
+                        Gia.Debug.DeferHollowRectangle(aa.Bounds, Gia.Theme.PrimaryThemeColor);
                         Gia.Debug.DeferPixel(aa.Bounds.Center, Gia.Theme.HighlightColor, 2);
                     }
                 }

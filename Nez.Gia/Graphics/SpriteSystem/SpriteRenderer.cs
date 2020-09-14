@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 using System;
 using System.Linq;
 
-namespace Nez
+namespace Nez.SpriteSystem
 {
     public class SpriteRenderer : RenderSystem
     {
@@ -15,7 +15,7 @@ namespace Nez
         /// For fine tuning the layer order please use the alternate constructor.
         /// </summary>
         /// <param name="w"></param>
-        public SpriteRenderer(World w, bool screenSpace) : base(w, screenSpace, typeof(SpriteC), typeof(Transform))
+        public SpriteRenderer(World w, bool screenSpace) : base(w, screenSpace, typeof(AABB), typeof(SpriteC), typeof(Transform))
         {
         }
 
@@ -23,7 +23,7 @@ namespace Nez
         /// Use this constructor to limit the draws to a specific set of entities by specifying extra
         /// required components.
         /// </summary>
-        public SpriteRenderer(World w, bool screenSpace, params Type[] extraPredicates) : base(w, screenSpace, new[] { typeof(SpriteC), typeof(Transform) }.Concat(extraPredicates).ToArray())
+        public SpriteRenderer(World w, bool screenSpace, params Type[] extraPredicates) : base(w, screenSpace, new[] { typeof(AABB), typeof(SpriteC), typeof(Transform) }.Concat(extraPredicates).ToArray())
         {
         }
 

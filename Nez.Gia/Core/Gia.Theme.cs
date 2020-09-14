@@ -27,6 +27,10 @@ namespace Nez
             /// </summary>
             public static Color FaintBackgroundColor;
             /// <summary>
+            /// For UI, the color of background UI Panels.
+            /// </summary>
+            public static Color PanelBackground;
+            /// <summary>
             /// The color of the application's main content like text. For black text on white background, this is black.
             /// </summary>
             public static Color ForegroundColor;
@@ -37,7 +41,7 @@ namespace Nez
             /// <summary>
             /// The Theme color, anything that needs a consistent color across the UI. For example Twitter's Blue
             /// </summary>
-            public static Color MainThemeColor;
+            public static Color PrimaryThemeColor;
             /// <summary>
             /// Not quite main, something that compliments MainThemeColor.
             /// </summary>
@@ -53,11 +57,12 @@ namespace Nez
                 DeveloperFont = Graphics.Instance.DevFont;
                 DefaultFont = Graphics.Instance.DevFontNarrow;
                 ApplicationNullColor = Color.Black;
+                PanelBackground = ColorExt.HexToColor("#14101d");
                 BackgroundColor = ColorExt.HexToColor("#07090F");
                 FaintBackgroundColor = Color.FromNonPremultiplied(BackgroundColor.R, BackgroundColor.G, BackgroundColor.B, 140);
                 ForegroundColor = ColorExt.HexToColor("#D8DBE2");
                 HighlightColor = ColorExt.HexToColor("#2176AE");
-                MainThemeColor = ColorExt.HexToColor("#04F06A");
+                PrimaryThemeColor = ColorExt.HexToColor("#04F06A");
                 SecondaryThemeColor = ColorExt.HexToColor("#E56399");
                 ErrorThemeColor = ColorExt.HexToColor("#D8DBE2");
             }

@@ -4,6 +4,6 @@ namespace Nez
 {
     public interface ITransactionalComponent<T>
     {
-        void Take(UICluster.TransactionalValue<T> transaction);
+        void Take(UserInterface.TransactionalBinding<T> transaction);
     }
 }

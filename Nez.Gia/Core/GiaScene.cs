@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Nez.SpriteSystem;
 using Nez.Systems;
+using Nez.UI;
 using System;
 using System.Text;
 
@@ -40,7 +41,12 @@ namespace Nez
 
         public GiaScene()
         {
-            Gia.InProgress = this;
+            Gia.BeingConstructed = this;
+
+            View = new Camera();
+            View.Origin = new Vector2(Screen.Width * 0.5f, Screen.Height * 0.5f);
+            ScreenBounds = new RectangleF(0, 0, Screen.Width, Screen.Height);
+
             DestroyOnExit = true;
             Nubs = new FastList<WindowTitleNub>();
             Runner = new DefaultParallelRunner(Environment.ProcessorCount);
@@ -53,13 +59,9 @@ namespace Nez
 
             SamplerState = SamplerState.PointClamp;
 
-            View = new Camera();
-            View.Origin = new Vector2(Screen.Width * 0.5f, Screen.Height * 0.5f);
-            ScreenBounds = new RectangleF(0, 0, Screen.Width, Screen.Height);
-
             ConstructSystemGraph(UpdateSystems, RenderSystems);
             ConstructEntityGraph();
-            Gia.InProgress = null;
+            Gia.BeingConstructed = null;
         }
 
         public virtual void ConstructSystemGraph(FastList<ISystem<GiaScene>> updateSystems, FastList<ISystem<GiaScene>> renderSystems)
@@ -175,13 +177,15 @@ namespace Nez
         {
             return new SequentialSystem<GiaScene>
             (
-                new SpriteRenderSystem(World)
+                new SpriteRenderer(World, screenSpace: false),
+                new UIRenderer(World, screenSpace: true)
             );
         }
         public ISystem<GiaScene> DefaultUpdateStack()
         {
             return new SequentialSystem<GiaScene>
             (
+                new UIUpdater(World)
             );
         }
 

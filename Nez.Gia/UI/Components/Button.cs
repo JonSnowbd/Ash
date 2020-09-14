@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
+using Nez.UI;
 
 namespace Nez.UIComponents
 {
-    public class Button : UIComponent
+    public class Button : UIComponent, ITransactionalComponent<bool>
     {
+        UserInterface.TransactionalBinding<bool> ExternalAction;
         public Color FontColor;
         public Color IdleColor;
         public Color HoverColor;
@@ -16,17 +18,22 @@ namespace Nez.UIComponents
         Color realColor;
         Color target;
 
-        public Button(IFont buttonLabelFont, string message, int padding = 3)
+        public Button(string message, int padding = 3, IFont buttonLabelFont = null) 
+            :  this(message, padding, buttonLabelFont ?? Gia.Theme.DefaultFont, Gia.Theme.SecondaryThemeColor,
+                   Gia.Theme.PrimaryThemeColor, Gia.Theme.HighlightColor, Gia.Theme.ForegroundColor)
         {
-            LabelFont = buttonLabelFont;
+        }
+        public Button(string message, int padding, IFont buttonLabelFont, Color idle, Color hover, Color clicked, Color fontColor)
+        {
+            LabelFont = buttonLabelFont ?? Gia.Theme.DefaultFont;
             Message = message;
             Padding = padding;
 
             // Colors
-            IdleColor = Gia.Theme.MainThemeColor;
-            HoverColor = Gia.Theme.SecondaryThemeColor;
-            FontColor = Gia.Theme.BackgroundColor;
-            ActiveColor = Gia.Theme.ForegroundColor;
+            IdleColor = idle;
+            HoverColor = hover;
+            ActiveColor = clicked;
+            FontColor = fontColor;
 
             // Meta
             DrawMethod = DefaultDraw;
@@ -39,7 +46,16 @@ namespace Nez.UIComponents
             // Interactivity
             SetInteractive();
             Interactivity.OnHover += (node) => target = HoverColor;
-            Interactivity.OnClick += (node) => realColor = ActiveColor;
+            Interactivity.OnClick += (node) =>
+            {
+                realColor = ActiveColor;
+                Manager.SetFocus(this);
+                ExternalAction?.PushFromControl(true);
+            };
+            Interactivity.OnEndClicking += (node) =>
+            {
+                ExternalAction?.PushFromControl(false);
+            };
             Interactivity.OnUnhover += (node) => target = IdleColor;
         }
 
@@ -64,6 +80,12 @@ namespace Nez.UIComponents
             realColor = Color.Lerp(realColor, target, 5f * Time.UnscaledDeltaTime);
             batcher.DrawRect(finalBounds, realColor);
             batcher.DrawString(LabelFont, Message, finalBounds.Location.ToVector2() + new Vector2(Padding, Padding), FontColor);
+        }
+
+        public void Take(UserInterface.TransactionalBinding<bool> transaction)
+        {
+            ExternalAction = transaction;
+            ExternalAction.PushFromControl(false); // Buttons start out not clicked.
         }
     }
 }

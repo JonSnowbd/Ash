@@ -167,8 +167,20 @@ namespace Nez
             public static void DeferPixel(Vector2 pos, Color c, int thickness = 1)
             {
                 Check();
+
                 DeferredEvents[DeferredCount].Type = 4;
                 DeferredEvents[DeferredCount].Position = pos;
+                DeferredEvents[DeferredCount].Color = c;
+                DeferredEvents[DeferredCount].Size = thickness;
+                DeferredCount++;
+            }
+            public static void DeferWorldPixel(Vector2 pos, Color c, int thickness = 1)
+            {
+                Check();
+                var view = Gia.Current.View;
+                var position = view.WorldToScreenPoint(pos);
+                DeferredEvents[DeferredCount].Type = 4;
+                DeferredEvents[DeferredCount].Position = position;
                 DeferredEvents[DeferredCount].Color = c;
                 DeferredEvents[DeferredCount].Size = thickness;
                 DeferredCount++;
@@ -188,12 +200,25 @@ namespace Nez
             public static void DeferLine(Vector2 from, Vector2 to, Color c, int thickness = 1)
             {
                 Check();
-                DeferredEvents[DeferredCount].Type = 5;
+                DeferredEvents[DeferredCount].Type = 6;
                 DeferredEvents[DeferredCount].Position = from;
                 DeferredEvents[DeferredCount].Color = c;
                 DeferredEvents[DeferredCount].Size = thickness;
                 DeferredEvents[DeferredCount].End = to;
                 DeferredCount++;
+            }
+
+            public static void DeferWorldHollowRect(RectangleF worldRect, Color c, int thickness = 1)
+            {
+                var view = Gia.Current.View;
+                var tl = view.WorldToScreenPoint(worldRect.Location);
+                var tr = view.WorldToScreenPoint(new Vector2(worldRect.Right, worldRect.Top));
+                var bl = view.WorldToScreenPoint(new Vector2(worldRect.Left, worldRect.Bottom));
+                var br = view.WorldToScreenPoint(worldRect.Location + worldRect.Size);
+                DeferLine(tl, tr, c, thickness);
+                DeferLine(tl, bl, c, thickness);
+                DeferLine(bl, br, c, thickness);
+                DeferLine(tr, br, c, thickness);
             }
         }
     }

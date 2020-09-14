@@ -4,24 +4,35 @@ namespace Nez.UIComponents
 {
     public class Label : UIComponent
     {
-        public IFont LabelFont;
+        IFont _labelFont;
+        public IFont LabelFont
+        {
+            get { return _labelFont; }
+            set { _labelFont = value; CalculateBounds(); SetDirty(); }
+        }
         public Color Color;
 
         string _message = "";
         public string Message
         {
             get { return _message; }
-            set { _message = value; CalculateBounds(); }
+            set { _message = value; CalculateBounds(); SetDirty(); }
         }
 
         Vector2 _Bounds;
-        public Label(string text, IFont font)
+
+        public Label(string text, IFont fontFace = null) : this(text, fontFace, Gia.Theme.ForegroundColor)
         {
-            _message = text;
-            LabelFont = font;
-            CalculateBounds();
+        }
+        public Label(string text, IFont fontFace, Color fontCol)
+        {
             DrawMethod = DefaultDraw;
-            Color = Gia.Theme.ForegroundColor;
+
+            _message = text;
+            _labelFont = fontFace;
+            Color = fontCol;
+            
+            CalculateBounds();
         }
 
         public override Vector2 MinimumNodeSize()

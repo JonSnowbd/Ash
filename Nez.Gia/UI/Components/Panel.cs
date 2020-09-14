@@ -14,7 +14,7 @@ namespace Nez.UIComponents
         {
             Width = width;
             Height = height;
-            Color = Gia.Theme.FaintBackgroundColor;
+            Color = Gia.Theme.PanelBackground;
             DrawMethod = DefaultDraw;
             CalculateBounds();
         }

@@ -11,24 +11,28 @@ namespace Coga
 		/// Locks the currently hovered node, making sure it is no longer
 		/// cleared or changed.
 		/// </summary>
-		void LockFocus();
+		void LockHover();
 		/// <summary>
 		/// Unlocks the hover, letting it get cleared and changed per frame.
 		/// </summary>
-		void UnlockFocus();
+		void UnlockHover();
 		/// <summary>
 		/// Sets the currently hovered Coga Node.
 		/// </summary>
-		void SetFocus(CogaNode node);
+		void SetHover(CogaNode node);
 
 		/// <summary>
 		/// Returns the currently hovered Coga Node.
 		/// </summary>
-		CogaNode GetFocus();
+		CogaNode GetHover();
 		/// <summary>
 		/// Returns the Coga Node being used as the root of everything.
 		/// </summary>
 		CogaNode GetRoot();
+
+		CogaNode GetFocus();
+
+		CogaNode SetFocus(CogaNode newFocus);
 
         /// <summary>
         /// Gets whether the click button is currently down

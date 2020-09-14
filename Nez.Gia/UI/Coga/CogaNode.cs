@@ -171,6 +171,7 @@ namespace Coga
 			TriggerNodeConfig();
 			return this;
 		}
+
 		/// <summary>
 		/// This sets this node to take up as much space as possible vertically.
 		/// If there are multiple fill-height rows in the layout then the remaining
@@ -186,10 +187,24 @@ namespace Coga
 			TriggerNodeConfig();
 			return this;
 		}
+
+		public CogaNode SetSizeInPixels(int width, int height)
+		{
+			SetWidthInPixels(width);
+			SetHeightInPixels(height);
+			return this;
+		}
+
+		public CogaNode SetSizeToGrow()
+        {
+			SetWidthToGrow();
+			SetHeightToGrow();
+			return this;
+        }
 		/// <summary>
 		/// Padding is the internal space from each edge that will never have a node overlap
 		/// in.
-		/// This space is ignored by Absolute layout nodes.
+		/// This space is ignored by Absolute child layout nodes.
 		/// </summary>
 		public CogaNode SetPadding(float? left, float? top, float? right, float? bottom)
 		{
@@ -537,7 +552,7 @@ namespace Coga
 		{
 			if (Compute.IsResolved())
 			{
-				return new Vector2(Compute.X + Compute.Width * 0.5f, Compute.Y + Compute.Height);
+				return new Vector2(Compute.X + Compute.Width * 0.5f, Compute.Y + Compute.Height * 0.5f);
 			}
 			return null;
 		}
@@ -566,7 +581,7 @@ namespace Coga
 		/// for any re-layouts it needs to do.
 		/// CogaManager does this for you.
 		/// </summary>
-		public void PerformLayout()
+		internal void PerformLayout()
 		{
 			if (!IsActive)
 				return;
@@ -601,7 +616,7 @@ namespace Coga
 		}
 
 		private List<CogaNode> _HoverPile = new List<CogaNode>();
-		public void PropagateMouseHover(Vector2 mouse)
+		internal void DetermineDeepestHover(Vector2 mouse)
 		{
 			_HoverPile.Clear();
 			foreach(var c in Children)
@@ -615,7 +630,7 @@ namespace Coga
 					if(c.NodeConfiguration.Layout == CogaLayout.Absolute)
 					{
 						// Absolute layouts get precedence due to their floaty nature.
-						c.PropagateMouseHover(mouse);
+						c.DetermineDeepestHover(mouse);
 						return;
 					}
 					_HoverPile.Add(c);
@@ -625,14 +640,14 @@ namespace Coga
 			if(_HoverPile.Count > 0)
 			{
 				_HoverPile.Sort((x,y) => { return x.Precedence.CompareTo(y.Precedence); });
-				_HoverPile[0].PropagateMouseHover(mouse);
+				_HoverPile[0].DetermineDeepestHover(mouse);
 				return;
 			}
 
 			// End of the line
 			if (!IsRoot && !IgnoresInput)
 			{
-				Manager.SetFocus(this);
+				Manager.SetHover(this);
 				return;
 			}
 		}
