@@ -18,6 +18,7 @@ namespace Nez
             for (int i = 0; i < systems.Length; i++)
             {
                 systems[i].IsPartOfSharedSystem = true;
+                systems[i].IsScreenSpace = screenSpace;
             }
 
             Material = Material.DefaultMaterial;

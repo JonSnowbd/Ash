@@ -8,7 +8,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="../Nez.Portable/Nez.csproj" />
-		<PackageReference Include="Coga.UI.Layout" Version="0.4.1" />
 		<PackageReference Include="DefaultEcs" Version="0.14.4" />
 	</ItemGroup>
 

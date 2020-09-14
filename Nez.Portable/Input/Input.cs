@@ -337,28 +337,11 @@ namespace Nez
 		/// alias for scaledMousePosition
 		/// </summary>
 		/// <value>The mouse position.</value>
-		public static Vector2 MousePosition => ScaledMousePosition;
-
-		/// <summary>
-		/// this takes into account the SceneResolutionPolicy and returns the value scaled to the RenderTargets coordinates
-		/// </summary>
-		/// <value>The scaled mouse position.</value>
-		public static Vector2 ScaledMousePosition => ScaledPosition(new Vector2(_currentMouseState.X, _currentMouseState.Y));
+		public static Vector2 MousePosition => _currentMouseState.Position.ToVector2();
 
 		public static Point MousePositionDelta =>
 			new Point(_currentMouseState.X, _currentMouseState.Y) -
 			new Point(_previousMouseState.X, _previousMouseState.Y);
-
-		public static Vector2 ScaledMousePositionDelta
-		{
-			get
-			{
-				var pastPos = new Vector2(_previousMouseState.X - _resolutionOffset.X,
-					_previousMouseState.Y - _resolutionOffset.Y);
-				pastPos *= _resolutionScale;
-				return ScaledMousePosition - pastPos;
-			}
-		}
 
 		#endregion
 	}
