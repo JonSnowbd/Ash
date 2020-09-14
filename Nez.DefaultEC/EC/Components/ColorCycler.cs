@@ -129,7 +129,7 @@ namespace Nez
 					y = 1.0f - t;
 					break;
 				case WaveFunctions.Random:
-					y = 1f - (Random.NextFloat() * 2f);
+					y = 1f - (Rand.NextFloat() * 2f);
 					break;
 			}
 

@@ -23,6 +23,11 @@ namespace Nez
 		public static bool ExitOnEscapeKeypress = true;
 
 		/// <summary>
+		/// This is updated per frame, total amount of batcher draw flushes.
+		/// </summary>
+		public static int DrawCalls = 0;
+
+		/// <summary>
 		/// enables/disables pausing when focus is lost. No update or render methods will be called if true when not in focus.
 		/// </summary>
 		public static bool PauseOnFocusLost = true;
@@ -249,6 +254,8 @@ namespace Nez
 
 		protected override void Draw(GameTime gameTime)
 		{
+			DrawCalls = 0;
+
 			if (PauseOnFocusLost && !IsActive)
 				return;
 

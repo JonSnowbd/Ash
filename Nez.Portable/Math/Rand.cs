@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 
 
 namespace Nez
 {
-	public static class Random
+	public static class Rand
 	{
 		private static int _seed = Environment.TickCount;
 		public static System.Random RNG = new System.Random(_seed);
@@ -161,6 +162,18 @@ namespace Nez
 				return first;
 
 			return second;
+		}
+
+		public static T Choose<T>(List<T> list)
+        {
+			return list[NextInt(list.Count)];
+        }
+
+
+		/// <param name="count">If your array is partially filled, this is how many are actually initialized/considered.</param>
+		public static T Choose<T>(T[] array, int count = -1)
+		{
+			return array[NextInt(count == -1 ? array.Length : count)];
 		}
 
 

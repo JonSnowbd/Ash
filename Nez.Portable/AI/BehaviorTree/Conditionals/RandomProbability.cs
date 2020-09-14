@@ -20,7 +20,7 @@
 
 		public override TaskStatus Update(T context)
 		{
-			if (Random.NextFloat() > _successProbability)
+			if (Rand.NextFloat() > _successProbability)
 				return TaskStatus.Success;
 
 			return TaskStatus.Failure;

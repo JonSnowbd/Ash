@@ -64,7 +64,7 @@ namespace Nez.Audio
 		{
 			if (_useRandomPitch || _useRandomPan)
 				return _soundEffects.RandomItem()
-					.Play(1, Random.Range(_pitchMin, _pitchMax), Random.Range(_panMin, _panMax));
+					.Play(1, Rand.Range(_pitchMin, _pitchMax), Rand.Range(_panMin, _panMax));
 			else
 				return _soundEffects.RandomItem().Play();
 		}

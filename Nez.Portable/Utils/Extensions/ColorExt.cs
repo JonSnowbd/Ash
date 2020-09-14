@@ -15,9 +15,16 @@ namespace Nez
 
 		public static Color HexToColor(string hex)
 		{
+			hex = hex.Trim('#');
 			float r = (HexToByte(hex[0]) * 16 + HexToByte(hex[1])) / 255.0f;
 			float g = (HexToByte(hex[2]) * 16 + HexToByte(hex[3])) / 255.0f;
 			float b = (HexToByte(hex[4]) * 16 + HexToByte(hex[5])) / 255.0f;
+
+			if (hex.Length > 6)
+			{
+				float a = (HexToByte(hex[6]) * 16 + HexToByte(hex[7])) / 255.0f;
+				return new Color(r, g, b, a);
+			}
 
 			return new Color(r, g, b);
 		}

@@ -47,8 +47,8 @@ namespace Nez
 				}
 				else
 				{
-					_shakeOffset.X = _shakeOffset.X + Random.NextFloat() - 0.5f;
-					_shakeOffset.Y = _shakeOffset.Y + Random.NextFloat() - 0.5f;
+					_shakeOffset.X = _shakeOffset.X + Rand.NextFloat() - 0.5f;
+					_shakeOffset.Y = _shakeOffset.Y + Rand.NextFloat() - 0.5f;
 				}
 
 				// TODO: this needs to be multiplied by camera zoom so that less shake gets applied when zoomed in

@@ -20,8 +20,8 @@ namespace Nez.Verlet
 			// animates the tree at the beginning
 			var noise = 3;
 			for (var i = 0; i < Particles.Length; ++i)
-				Particles.Buffer[i].Position += (new Vector2(Mathf.Floor(Random.NextFloat() * noise),
-					Mathf.Floor(Random.NextFloat() * noise)));
+				Particles.Buffer[i].Position += (new Vector2(Mathf.Floor(Rand.NextFloat() * noise),
+					Mathf.Floor(Rand.NextFloat() * noise)));
 		}
 
 

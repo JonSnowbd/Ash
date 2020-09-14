@@ -1012,6 +1012,8 @@ namespace Nez
 
 			DrawPrimitives(curTexture, offset, _numSprites - offset);
 
+			Core.DrawCalls += 1;
+
 			_numSprites = 0;
 		}
 

@@ -15,7 +15,7 @@ namespace Nez
 			char ch;
 			for (int i = 0; i < size; i++)
 			{
-				ch = Convert.ToChar(Convert.ToInt32(Math.Floor(26 * Random.NextFloat() + 65)));
+				ch = Convert.ToChar(Convert.ToInt32(Math.Floor(26 * Rand.NextFloat() + 65)));
 				builder.Append(ch);
 			}
 

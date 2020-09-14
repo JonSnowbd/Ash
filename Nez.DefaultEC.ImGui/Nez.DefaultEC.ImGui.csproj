@@ -7,13 +7,9 @@
     <PropertyGroup>
         <OutputType>Library</OutputType>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
         <PlatformTarget>AnyCPU</PlatformTarget>
-        <RootNamespace>Nez.DefaultEC.ImGui</RootNamespace>
         <AssemblyName>Nez.DefaultEC.ImGui</AssemblyName>
         <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-        <IntermediateOutputPath>obj\Nez.ImGui\$(Configuration)</IntermediateOutputPath>
     </PropertyGroup>
 
     <ItemGroup>
