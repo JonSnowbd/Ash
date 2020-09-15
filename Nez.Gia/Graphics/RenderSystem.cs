@@ -1,6 +1,5 @@
 ﻿using DefaultEcs;
 using DefaultEcs.System;
-using Nez.VisibilitySystem;
 using System;
 
 namespace Nez
@@ -15,7 +14,7 @@ namespace Nez
         int skippedItems = 0;
         bool inspecting = false;
 
-        protected static EntitySet Compute(World world, Type[] types)
+        static EntitySet Compute(World world, Type[] types)
         {
             var build = world.GetEntities();
             for(int i = 0; i < types.Length; i++)

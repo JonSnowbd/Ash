@@ -1,12 +1,9 @@
-﻿using System;
-using System.Runtime.CompilerServices;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input.Touch;
+﻿using Microsoft.Xna.Framework;
 
 
 namespace Nez
 {
-	public class Camera
+    public class Camera
 	{
 		/// <summary>
 		/// shortcut to entity.transform.position

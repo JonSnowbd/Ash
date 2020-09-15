@@ -4,6 +4,8 @@ namespace Nez.UIComponents
 {
     public class Label : UIComponent
     {
+        public delegate string Binding();
+
         IFont _labelFont;
         public IFont LabelFont
         {
@@ -21,11 +23,20 @@ namespace Nez.UIComponents
 
         Vector2 _Bounds;
 
-        public Label(string text, IFont fontFace = null) : this(text, fontFace, Gia.Theme.ForegroundColor)
+        string bindCache;
+        Binding bind;
+
+        public Label(Binding binding, IFont fontFace = null) : this("", fontFace ?? Gia.Theme.DefaultFont, Gia.Theme.ForegroundColor)
         {
+            bind = binding;
+            CheckCache();
         }
+        public Label(string text, IFont fontFace = null) : this(text, fontFace ?? Gia.Theme.DefaultFont, Gia.Theme.ForegroundColor) { }
         public Label(string text, IFont fontFace, Color fontCol)
         {
+            bind = null;
+            bindCache = "";
+
             DrawMethod = DefaultDraw;
 
             _message = text;
@@ -52,7 +63,19 @@ namespace Nez.UIComponents
 
         public void DefaultDraw(Batcher batcher, Rectangle finalBounds)
         {
+            if (bind != null)
+                CheckCache();
             batcher.DrawString(LabelFont, Message, finalBounds.Location.ToVector2(), Color);
+        }
+
+        void CheckCache()
+        {
+            var output = bind();
+            if (output != bindCache)
+            {
+                bindCache = output;
+                Message = output;
+            }
         }
     }
 }

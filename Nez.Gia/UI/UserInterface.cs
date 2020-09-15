@@ -34,10 +34,9 @@ namespace Nez.UI
                 ExternalPush(value);
             }
         }
-
-        public FastList<TransactionalBinding> Transactions;
         public UIComponent Hover;
         public bool HoverLocked;
+        public bool DisruptFocusOnExternalClicks;
 
         public int Width;
         public int Height;
@@ -49,7 +48,7 @@ namespace Nez.UI
 
         public UserInterface(int width, int height)
         {
-            Transactions = new FastList<TransactionalBinding>();
+            DisruptFocusOnExternalClicks = true;
             Hover = null;
             HoverLocked = false;
 

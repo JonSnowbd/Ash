@@ -21,14 +21,10 @@ namespace Nez.UIComponents
 #endif
         }
 
-        public virtual void IdleInputUpdate()
+        public virtual void FocusUpdate()
         {
-            if(Interactivity != null)
-            {
-                Interactivity.Update(Time.UnscaledDeltaTime);
-            }
-        }
 
+        }
 
         public override void Destroy()
         {

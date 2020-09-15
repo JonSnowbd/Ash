@@ -645,7 +645,7 @@ namespace Coga
 			}
 
 			// End of the line
-			if (!IsRoot && !IgnoresInput)
+			if (!IgnoresInput)
 			{
 				Manager.SetHover(this);
 				return;

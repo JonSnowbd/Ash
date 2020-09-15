@@ -21,8 +21,8 @@ namespace Nez
         public IParallelRunner Runner;
         public NezContentManager Content;
 
-        FastList<ISystem<GiaScene>> UpdateSystems;
-        FastList<ISystem<GiaScene>> RenderSystems;
+        public FastList<ISystem<GiaScene>> UpdateSystems;
+        public FastList<ISystem<GiaScene>> RenderSystems;
 
         public Batcher Batcher;
 
@@ -87,7 +87,29 @@ namespace Nez
             }
         }
 
-        public void Render()
+        /// <summary>
+        /// The update flow of the scene. It is not recommended to override this
+        /// unless you have a very specific reason.
+        /// </summary>
+        public virtual void Update()
+        {
+#if DEBUG
+            if (Gia.Debug.ToggleInput.IsPressed)
+                Gia.Debug.Enabled = !Gia.Debug.Enabled;
+            Analytics();
+#endif
+            InternalInputUpdate();
+            for (int i = 0; i < UpdateSystems.Length; i++)
+            {
+                UpdateSystems[i].Update(this);
+            }
+        }
+
+        /// <summary>
+        /// The render flow of the scene. It is not recommended to override this
+        /// unless you have a very specific reason.
+        /// </summary>
+        public virtual void Render()
         {
             Core.GraphicsDevice.SetRenderTarget(SceneTarget);
             Core.GraphicsDevice.Clear(Gia.Theme.BackgroundColor);
@@ -111,21 +133,6 @@ namespace Nez
 
             Graphics.Instance.Batcher.End();
 
-        }
-
-        public void Update()
-        {
-#if DEBUG
-            if (Gia.Debug.ToggleInput.IsPressed)
-                Gia.Debug.Enabled = !Gia.Debug.Enabled;
-            Analytics();
-#endif
-            InternalInputUpdate();
-            PreUpdate();
-            for(int i = 0; i < UpdateSystems.Length; i++)
-            {
-                UpdateSystems[i].Update(this);
-            }
         }
 
         float analyticsTimer = 0;
@@ -189,13 +196,6 @@ namespace Nez
             );
         }
 
-        /// <summary>
-        /// Called before any Update or Render systems are ran.
-        /// </summary>
-        public virtual void PreUpdate()
-        {
-
-        }
         /// <summary>
         /// Called when this scene is set as the current scene. Can happen multiple times.
         /// </summary>
