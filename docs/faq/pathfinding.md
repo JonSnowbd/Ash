@@ -1,6 +1,6 @@
 Pathfinding
 ==========
-Nez provides three pathfinding algorithms out of the box: Breadth First Search, Dijkstra (weighted) and Astar (weighted with heuristic). All three are well suited for not only grid based graphs but also graphs of any type. Which algorithm should you use? That depends on your specific graph and needs. The next sections will go into a bit more detail on each of the algorithms so that you can intelligently decide which to use.
+Ash provides three pathfinding algorithms out of the box: Breadth First Search, Dijkstra (weighted) and Astar (weighted with heuristic). All three are well suited for not only grid based graphs but also graphs of any type. Which algorithm should you use? That depends on your specific graph and needs. The next sections will go into a bit more detail on each of the algorithms so that you can intelligently decide which to use.
 
 It should be noted that none of the search algorithms require the nodes searched to be locations. Pathfinding doesn't care about what data it is finding a path for. All it needs to know is the node and that node's neighbors (edges). The nodes can be anything at all: paths in a dialog tree, actions for AI (Astar is used by the Goal Oriented Action Planner) or even strings (see below for an example). Edges can be traversable one way or both ways.
 

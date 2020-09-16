@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+		<AssemblyName>Ash.Content</AssemblyName>
+        <TargetFramework>netstandard2.0</TargetFramework>
+		<RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+		<NuspecFile>Ash.Content.nuspec</NuspecFile>
+    </PropertyGroup>
+  
+    <ItemGroup>
+        <Content Include="DefaultContent\**">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>  
+    </ItemGroup>
+</Project>

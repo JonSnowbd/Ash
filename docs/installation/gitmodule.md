@@ -4,7 +4,7 @@
 - [Dotnet Core SDK](https://dotnet.microsoft.com/download)
 - Any text editor of your choice.
 
-This tutorial will show you how to make your own .Net Core 3.1 Monogame game with Nez.
+This tutorial will show you how to make your own .Net Core 3.1 Monogame game with Ash.
 
 ?> For this document, anywhere you see `GAME` you should substitute with your games name.
 
@@ -24,29 +24,29 @@ a git repo to have a nice and safe VCS.
 
 ----
 
-### <small>2.</small> Add Nez & Your Game
+### <small>2.</small> Add Ash & Your Game
 
 ```bash
-$ git submodule add https://github.com/JonSnowbd/Nez.git
+$ git submodule add https://github.com/JonSnowbd/Ash.git
 $ mkdir GAME
 $ cd GAME
 $ dotnet new console # Creates a .net core 3.1 console application.
 ```
 
-With this we add Nez by adding it as a submodule. What this means is that it is stored as
+With this we add Ash by adding it as a submodule. What this means is that it is stored as
 a pointer to the actual git project. This makes it easy to update later.
 
 Think of it as adding an image via a url, versus actually uploading the image.
 
-Next up we should register everything we're going to use from Nez into our solution file.
+Next up we should register everything we're going to use from Ash into our solution file.
 
-And we need 2 specific projects from nez; The Portable library(Nez.Portable),
-and an IScene implementation(Nez.DefaultEC in this case).
+And we need 2 specific projects from nez; The Portable library(Ash.Portable),
+and an IScene implementation(Ash.DefaultEC in this case).
 
 ```bash
 $ cd .. # Back up to GAME/
-$ dotnet sln add Nez/Nez.Portable/Nez.csproj
-$ dotnet sln add Nez/Nez.DefaultEC/Nez.DefaultEC.csproj
+$ dotnet sln add Ash/Ash.Portable/Ash.csproj
+$ dotnet sln add Ash/Ash.DefaultEC/Ash.DefaultEC.csproj
 $ dotnet sln add GAME/GAME.csproj
 ```
 
@@ -76,11 +76,11 @@ to the first property group. If youre confused you can see the whole .csproj lat
 </PropertyGroup>
 ```
 
-Then we add the packages for Nez and we're good to go.
+Then we add the packages for Ash and we're good to go.
 ```xml
 <ItemGroup>
-    <ProjectReference Include="..\Nez\Nez.Portable\Nez.Standard.csproj" />
-    <ProjectReference Include="..\Nez\Nez.DefaultEC\Nez.DefaultEC.Standard.csproj" />
+    <ProjectReference Include="..\Ash\Ash.Portable\Ash.Standard.csproj" />
+    <ProjectReference Include="..\Ash\Ash.DefaultEC\Ash.DefaultEC.Standard.csproj" />
 </ItemGroup>
 ```
 
@@ -100,8 +100,8 @@ So that the entire file looks something like this
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Nez\Nez.Portable\Nez.Standard.csproj" />
-        <ProjectReference Include="..\Nez\Nez.DefaultEC\Nez.DefaultEC.Standard.csproj" />
+        <ProjectReference Include="..\Ash\Ash.Portable\Ash.Standard.csproj" />
+        <ProjectReference Include="..\Ash\Ash.DefaultEC\Ash.DefaultEC.Standard.csproj" />
     </ItemGroup>
 
 </Project>
@@ -119,7 +119,7 @@ to see your entire project and get coding!
 We create a file `GAME/GAME/GameCore.cs` with the following contents
 
 ```csharp
-using Nez;
+using Ash;
 
 namespace GameSource
 {

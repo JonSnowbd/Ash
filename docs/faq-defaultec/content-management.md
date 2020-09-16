@@ -1,8 +1,8 @@
 Content Management
 ==========
-Nez includes it's own content management system that builds on the MonoGame ContentManager class. All content management goes through the `NezContentManager` which is a subclass of `ContentManager`. The debug console has a 'assets' command that will log all scene or global assets so you will always know what is still in memory.
+Ash includes it's own content management system that builds on the MonoGame ContentManager class. All content management goes through the `NezContentManager` which is a subclass of `ContentManager`. The debug console has a 'assets' command that will log all scene or global assets so you will always know what is still in memory.
 
-Nez provides containers for global and per-scene content. You can also create your own `NezContentManager` at any time if you need to manage some short-lived assets. You can also unload assets at any time via the `UnloadAsset<T>` method. Note that Effects should be unloaded with `UnloadEffect` since they are a special case.
+Ash provides containers for global and per-scene content. You can also create your own `NezContentManager` at any time if you need to manage some short-lived assets. You can also unload assets at any time via the `UnloadAsset<T>` method. Note that Effects should be unloaded with `UnloadEffect` since they are a special case.
 
 
 ## Global Content
@@ -15,12 +15,12 @@ Each scene has it's own `NezContentManager` (Scene.Content) that you can use to 
 
 
 ## Loading Effects
-There are several ways to load Effects with Nez that are not present in MonoGame. These were added to make Effect management easier, especially when dealing with Effects that are subclasses of Effect (such as AlphaTestEffect and BasicEffect). All of the built-in Nez Effects can also be loaded easily. The available methods are:
+There are several ways to load Effects with Ash that are not present in MonoGame. These were added to make Effect management easier, especially when dealing with Effects that are subclasses of Effect (such as AlphaTestEffect and BasicEffect). All of the built-in Ash Effects can also be loaded easily. The available methods are:
 
 - **LoadMonoGameEffect<T>:** loads and manages any Effect that is built-in to MonoGame such as BasicEffect, AlphaTestEffect, etc
 - **LoadEffect/LoadEffect<T>:** loads an ogl/fxb effect directly from file and handles disposing of it when the ContentManager is disposed
 - **LoadEffect<T>( string name, byte[] effectCode ):** loads an ogl/fxb effect directly from its bytes and handles disposing of it when the ContentManager is disposed
-- **LoadNezEffect:** loads a built-in Nez effect. These are any of the `Effect` subclasses in the Nez/Graphics/Effects folder.
+- **LoadNezEffect:** loads a built-in Ash effect. These are any of the `Effect` subclasses in the Ash/Graphics/Effects folder.
 - **LoadOgmoProject:** loads an [Ogmo](https://ogmo-editor-3.github.io) `project.ogmo` file, but none of its levels(loaded through the ogmo project that is returned.)
 - **LoadJson<T>:** loads a .json file and coerces it into the given generic type using Newtonsoft's Json.Net. Takes an optional context object to be used in custom converters.
 

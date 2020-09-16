@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<package>
+    <metadata>
+        <id>Ash.Content</id>
+        <authors>prime31,PySnow</authors>
+		<version>1.2.2</version>
+        <projectUrl>https://jonsnowbd.github.io/Ash/</projectUrl>
+		<repository type="git" url="https://github.com/JonSnowbd/Ash.git" />
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Nez is a free 2D focused framework that works with MonoGame and FNA.</description>
+        <tags>2D Gamedev Monogame Nez Ash Library</tags>
+		<license type="expression">MIT</license>
+    </metadata>
+    <files>
+        <file src="DefaultContent\**\*" target="content\DefaultContent" />
+		<file src="Ash.Content.targets" target="build\Ash.Content.targets" />
+    </files>
+</package>

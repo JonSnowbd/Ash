@@ -2,14 +2,14 @@
 
 ## Scenes
 
-Nez has a few major facets to cover before you can just dive in on a new project. Simply put
-Nez has a central theme of `Scene` classes that house all the game logic. They have no
+Ash has a few major facets to cover before you can just dive in on a new project. Simply put
+Ash has a central theme of `Scene` classes that house all the game logic. They have no
 assumptions made about them so you are free to create your game under any paradigm that can
 be reduced to a single `Scene` class.
 
-By default this is [nothing but an interface](https://github.com/JonSnowbd/Nez/blob/py-2.0/Nez.Portable/IScene.cs)
+By default this is [nothing but an interface](https://github.com/JonSnowbd/Ash/blob/py-2.0/Ash.Portable/IScene.cs)
 that exposes some necessary methods like `Update` and `Render`. By default there is nothing
-that implements this, so there are only 2 options; rolling your own, or importing [Nez.DefaultEC](/overview/nez-defaultec).
+that implements this, so there are only 2 options; rolling your own, or importing [Ash.DefaultEC](/overview/nez-defaultec).
 
 ----
 
@@ -22,7 +22,7 @@ you use its life cycle to create Scenes and other good stuff your game needs.
 Overridable lifecycle methods of interest are as follows;
 
 ```csharp
-// The biggest thing you will need to override in Nez. Unlike in XNA-derivatives
+// The biggest thing you will need to override in Ash. Unlike in XNA-derivatives
 // you will do all your loading here. Core.Content is global and will not be unloaded
 // until the game closes, so is useful for global assets such as UI.
 protected virtual void Initialize();
@@ -31,7 +31,7 @@ protected virtual void Initialize();
 protected virtual void BeginRun();
 
 // Run before `Core.Draw` to determine whether drawing is necessary.
-// This can be useful to use Nez to create efficient GUI Applications.
+// This can be useful to use Ash to create efficient GUI Applications.
 protected virtual bool BeginDraw();
 
 // Self explanatory. You shouldn't need to override update on core since `Scene` classes
@@ -49,7 +49,7 @@ protected virtual void EndRun();
 
 ## Loading
 
-Asset loading in Nez is different to XNA-derivatives. Instead of using a content builder
+Asset loading in Ash is different to XNA-derivatives. Instead of using a content builder
 we load the assets directly through `NezContentManager` classes that have special methods
 to load each file type(including stuff like Ogmo/Tiled/Json files).
 

@@ -1,6 +1,6 @@
 AI
 ==========
-Nez includes several different options for setting up AI ranging from a super simple transitionless finite state machine (FSM) to extendable behavior trees to ultra-flexible Utility Based AI. You can mix and match them as you see fit.
+Ash includes several different options for setting up AI ranging from a super simple transitionless finite state machine (FSM) to extendable behavior trees to ultra-flexible Utility Based AI. You can mix and match them as you see fit.
 
 
 Simple State Machine
@@ -59,7 +59,7 @@ machine.ChangeState<ChasingState>();
 
 Behavior Trees
 ==========
-The de facto standard for composing AI for the last decade. Behavior trees are composed of a tree of nodes. Nodes can make decisions and perform actions based on the state of the world. Nez includes a `BehaviorTreeBuilder` class that provides a fluent API for setting up a behavior tree. The `BehaviorTreeBuilder` is a great way to reduce the barrier of entry to using behavior trees and get up and running quickly.
+The de facto standard for composing AI for the last decade. Behavior trees are composed of a tree of nodes. Nodes can make decisions and perform actions based on the state of the world. Ash includes a `BehaviorTreeBuilder` class that provides a fluent API for setting up a behavior tree. The `BehaviorTreeBuilder` is a great way to reduce the barrier of entry to using behavior trees and get up and running quickly.
 
 
 ## Composites
@@ -74,7 +74,7 @@ Composites are parent nodes in a behavior tree. They house 1 or more children an
 
 
 ## Conditionals
-Conditionals are binary success/failure nodes. They are identified by the IConditional interface. They check some condition of your game world and either return success or failure. These are inherently game specific so Nez only provides a single generic Conditional out of the box and a helper Conditional that wraps an Action so you can avoid having to make a separate class for each Conditional.
+Conditionals are binary success/failure nodes. They are identified by the IConditional interface. They check some condition of your game world and either return success or failure. These are inherently game specific so Ash only provides a single generic Conditional out of the box and a helper Conditional that wraps an Action so you can avoid having to make a separate class for each Conditional.
 
 - **RandomProbability<T>:** return success when the random probability is above the specified success probability
 - **ExecuteActionConditional<T>:** wraps a Func and executes it as the Conditional. Useful for prototyping and to avoid creating separate classes for simple Conditionals.

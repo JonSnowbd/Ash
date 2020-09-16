@@ -1,6 +1,6 @@
 Scene Transitions
 ==========
-Every game needs transition effects to have a polished look and feel. With Nez, transitions can be done between Scenes and also within a Scene. There are several built-in transitions and Nez makes it easy to make your own, custom transition effects.
+Every game needs transition effects to have a polished look and feel. With Ash, transitions can be done between Scenes and also within a Scene. There are several built-in transitions and Ash makes it easy to make your own, custom transition effects.
 
 
 
@@ -39,7 +39,7 @@ Transitions generally come in two flavors: one part and two part. A one part tra
 - `Render` is called every frame so that you can control the final render output. You can use the `_isNewSceneLoaded` flag for two part transitions to determine if you are on part one or two.
 - override `OnBeginTransition`. This method will compose the bulk of the transition code. It is called in a coroutine so you can yield to control flow.
 	- (optional) for two part transitions, you will want to perform your first part (example, fade to black)
-	- yield a call to load up the next Scene: `yield return Core.StartCoroutine( LoadNextScene() )`. Note that you should do this even for intra-Scene transitions. Nez will take care of properly setting the `_isNewSceneLoaded` flag even for intra-Scene transitions to make the code for two part transitions the same for both cases.
+	- yield a call to load up the next Scene: `yield return Core.StartCoroutine( LoadNextScene() )`. Note that you should do this even for intra-Scene transitions. Ash will take care of properly setting the `_isNewSceneLoaded` flag even for intra-Scene transitions to make the code for two part transitions the same for both cases.
 	- perform your transition (example, fade out the previous Scene render to show the new Scene)
 	- call `TransitionComplete` which will end the transition and cleanup the RenderTarget
 	- unload any Effects/Textures that you used. Alternatively, you can override `TransitionComplete` and do cleanup there. Just be sure to call base!

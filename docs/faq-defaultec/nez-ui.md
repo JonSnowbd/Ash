@@ -1,9 +1,9 @@
-Nez UI
+Ash UI
 ============
-Nez UI is based on TableLayout ([click for documentation](https://github.com/EsotericSoftware/tablelayout/blob/master/README.md)) and the libGDX Scene2D UI system (docs are [here](https://github.com/libgdx/libgdx/wiki/Scene2d.ui)). You can find detailed docs on the libGDX table [here](https://github.com/libgdx/libgdx/wiki/Table). As of this writing the API is nearly identical. The main differences to be aware of when using the libGDX docs for reference are:
+Ash UI is based on TableLayout ([click for documentation](https://github.com/EsotericSoftware/tablelayout/blob/master/README.md)) and the libGDX Scene2D UI system (docs are [here](https://github.com/libgdx/libgdx/wiki/Scene2d.ui)). You can find detailed docs on the libGDX table [here](https://github.com/libgdx/libgdx/wiki/Table). As of this writing the API is nearly identical. The main differences to be aware of when using the libGDX docs for reference are:
 
-- the Actor class is Element in Nez
-- the Widget and WidgetGroup classes dont exist in Nez. Similar functionality is found in the Element and Group classes but this is really only relevant if you are making your own custom controls.
+- the Actor class is Element in Ash
+- the Widget and WidgetGroup classes dont exist in Ash. Similar functionality is found in the Element and Group classes but this is really only relevant if you are making your own custom controls.
 
 
 Lets jump right in and see what its like to make a UI. We will make a UI with a ProgressBar and Slider (both horizontal) and Button centered in a vertical stack. Note that the `Stage` referenced below is directly from the `UICanvas` component, which is a simple base component for managing a Stage.
@@ -36,7 +36,7 @@ table.Add( button ).SetMinWidth( 100 ).SetMinHeight( 30 );
 
 
 ## Skins
-Nez UI supports a skin system similar to [libGDX skins](https://github.com/libgdx/libgdx/wiki/Skin). Skins are optional but highly recommended. They act as a container to hold all of your UI resources and offer a bunch of automatic conversions. Nez includes a simple, default skin (accessible via `Skin.CreateDefaultSkin`) that you can use to mock up UIs quickly. You can create a skin programatically or via a JSON file that is run through the UI Skin Importer in the Pipeline tool. This gets the JSON parsed at build time so the data is ready to use at runtime. Below is example JSON with some comments added explaining the different elements.
+Ash UI supports a skin system similar to [libGDX skins](https://github.com/libgdx/libgdx/wiki/Skin). Skins are optional but highly recommended. They act as a container to hold all of your UI resources and offer a bunch of automatic conversions. Ash includes a simple, default skin (accessible via `Skin.CreateDefaultSkin`) that you can use to mock up UIs quickly. You can create a skin programatically or via a JSON file that is run through the UI Skin Importer in the Pipeline tool. This gets the JSON parsed at build time so the data is ready to use at runtime. Below is example JSON with some comments added explaining the different elements.
 
 ```javascript
 {
@@ -61,10 +61,10 @@ Nez UI supports a skin system similar to [libGDX skins](https://github.com/libgd
 	ButtonStyle:
 	{
 		// "default" is the name of the style that is used at runtime to find it. Any font, color or IDrawable can be specified.
-		// Nez UI will search any loaded atlases for the specified resource.
+		// Ash UI will search any loaded atlases for the specified resource.
 		default: { Down: 'default-round-down', Up: 'default-round' },
 		toggle: { Down: 'default-round-down', Checked: 'default-round-down', Up: 'default-round' },
-		// this ButtonStyle uses only references to colors. Nez UI will handle making appropriate resources at runtime for you.
+		// this ButtonStyle uses only references to colors. Ash UI will handle making appropriate resources at runtime for you.
 		colored: { Down: 'gray', Up: 'black', Over: 'blue' }
 	},
 	SplitPaneStyle:
@@ -162,7 +162,7 @@ skin.Add( "textfield", new TextFieldStyle( null, Color.White, skin.GetDrawable( 
 
 
 ## Gamepad Input
-Nez UI supports gamepad input out of the box via the `IGamepadFocusable` interface. Buttons (and any subclasses such as TextButton, Checkbox, etc) and Sliders will work out of the box (note that Sliders require `ShouldUseExplicitFocusableControl` to be true). To enable gamepad input processing just set the first focusable element via the `stage.SetGamepadFocusElement` method. That will trigger the stage to use gamepad input. By default, the A button will be used for activating a UI Element. You can change this via the `stage.GamepadActionButton`. Also by default keyboard input (arrow keys and enter) will also work and is customizable via `KeyboardEmulatesGamepad` and `KeyboardActionKey`. If you have custom controls that would like to take part in gamepad input just implement the IGamepadFocusable interface on the element. If you are subclassing Button or Slider it is even easier: just override any of the 4 focus handlers: `UnFocused`, `UnUnfocused`, `UnActionButtonPressed` and `UnActionButtonReleased`.
+Ash UI supports gamepad input out of the box via the `IGamepadFocusable` interface. Buttons (and any subclasses such as TextButton, Checkbox, etc) and Sliders will work out of the box (note that Sliders require `ShouldUseExplicitFocusableControl` to be true). To enable gamepad input processing just set the first focusable element via the `stage.SetGamepadFocusElement` method. That will trigger the stage to use gamepad input. By default, the A button will be used for activating a UI Element. You can change this via the `stage.GamepadActionButton`. Also by default keyboard input (arrow keys and enter) will also work and is customizable via `KeyboardEmulatesGamepad` and `KeyboardActionKey`. If you have custom controls that would like to take part in gamepad input just implement the IGamepadFocusable interface on the element. If you are subclassing Button or Slider it is even easier: just override any of the 4 focus handlers: `UnFocused`, `UnUnfocused`, `UnActionButtonPressed` and `UnActionButtonReleased`.
 
 If you want finer grained control over which Element gains focus when a particular direction is pressed on the gamepad you can manually set the `GamepadUp/Down/Left/RightElement` properties. Leaving any null will result in no focus change when that direction is pressed and the `UnUnhandledDirectionPressed` method will be called. Note that you must also set `IGamepadFocusable.ShouldUseExplicitFocusableControl` when setting these directly. Below is a simple example of setting up 2 buttons and a slider horizontally. The slider's value will be changed when up/down is pressed on the gamepad.
 

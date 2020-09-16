@@ -11,14 +11,14 @@ MacTester/bin
 MacTester/Content/bin
 MacTester/Content/obj
 MacTester/obj
-Nez-PCL/bin
-Nez-PCL/obj
+Ash-PCL/bin
+Ash-PCL/obj
 *.userprefs
 UpgradeLog.htm
 Demos
 packages
-Nez.PipelineImporter/bin
-Nez.PipelineImporter/obj
+Ash.PipelineImporter/bin
+Ash.PipelineImporter/obj
 MacTester
 MacTester35
 iOSTester
@@ -62,6 +62,6 @@ bld/
 # NuGet v3's project.json files produces more ignoreable files
 *.nuget.props
 *.nuget.targets
-Nez.Portable/project.lock.json
-Nez.Portable/Nez.FNA.csproj.nuget.cache
+Ash.Portable/project.lock.json
+Ash.Portable/Ash.FNA.csproj.nuget.cache
 .idea

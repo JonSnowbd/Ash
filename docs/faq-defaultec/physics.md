@@ -1,7 +1,7 @@
-Nez Physics/Collisions
+Ash Physics/Collisions
 ==========
 
-It serves to reiterate what has been stated before: Nez physics is *not* a realistic physics simulation. It provides what I call *game* physics. You can do things like linecasts to detect colliders, overlap checks, collision checks, sweep tests and more. What you don't get is a full rigid body simulation. *You* get to control your game's feel from top to bottom. If you are looking for a full physics simulation see the optional [Farseer Physics implementation](FarseerPhysics.md).
+It serves to reiterate what has been stated before: Ash physics is *not* a realistic physics simulation. It provides what I call *game* physics. You can do things like linecasts to detect colliders, overlap checks, collision checks, sweep tests and more. What you don't get is a full rigid body simulation. *You* get to control your game's feel from top to bottom. If you are looking for a full physics simulation see the optional [Farseer Physics implementation](FarseerPhysics.md).
 
 
 
@@ -40,7 +40,7 @@ if( hit.Collider != null )
 	Debug.Log( "ray hit {0}, entity: {1}", hit, hit.collider.entity );
 ```
 
-Nez has some more advanced collision/overlap checks using methods such as Minkowski Sums, Separating Axis Theorem and good old trigonometry. These are all wrapped up in simple to use methods on the Collider class for you. Lets take a look at some examples.
+Ash has some more advanced collision/overlap checks using methods such as Minkowski Sums, Separating Axis Theorem and good old trigonometry. These are all wrapped up in simple to use methods on the Collider class for you. Lets take a look at some examples.
 
 This first example is the easiest way to deal with collisions. `deltaMovement` is the amount that you would like to move the Entity, typically `velocity * Time.DeltaTime`. The `CollidesWithAny` method will check all collisons and adjust deltaMovement to resolve any collisions.
 

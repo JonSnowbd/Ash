@@ -1,7 +1,7 @@
 Scene/Entity/Component System
 ==========
 
-Most of Nez revolves around an Entity-Component system (ECS). The Nez ECS is not unlike any other ECS you may have worked with so it should be instantly familiar.
+Most of Ash revolves around an Entity-Component system (ECS). The Ash ECS is not unlike any other ECS you may have worked with so it should be instantly familiar.
 
 
 
@@ -10,9 +10,9 @@ The root of the ECS. Scenes can be thought of as the different parts of your gam
 
 Scene's provide a NezContentManager (Scene.contentManager) that you can use to load up scene-specific content. When the scene is finished the content will be unloaded automatically for you. If you need to load global content (anything that would be used by several scenes) you can use the Core.contentManager which is not ever explicitly unloaded.
 
-A Scene can contain a special kind of Component called a `SceneComponent`. SceneComponents are managed via the add/get/getOrCreate/removeSceneComponent methods. A SceneComponent can be thought of as a simplified Component. It contains a small amount of lifecycle methods that are overrideable (onEnabled/onDisabled/update/onRemovedFromScene). These can be used when you need an object that lives at the Scene level but does not require an Entity container. One example included with Nez is the Farseer world object which manages the physics simulation.
+A Scene can contain a special kind of Component called a `SceneComponent`. SceneComponents are managed via the add/get/getOrCreate/removeSceneComponent methods. A SceneComponent can be thought of as a simplified Component. It contains a small amount of lifecycle methods that are overrideable (onEnabled/onDisabled/update/onRemovedFromScene). These can be used when you need an object that lives at the Scene level but does not require an Entity container. One example included with Ash is the Farseer world object which manages the physics simulation.
 
-Nez provides several different ways to get your final scene rendered flexibly and efficiently. It uses a concept called `SceneResolutionPolicy` to manage how things are rendered. The `SceneResolutionPolicy` along with the design time width/height that you set decides what size the RenderTarget2D should be and how it changes when the window size changes. Several SceneResolutionPolicys also include pixel perfect variants for use with pixal art games. Pixel perfect variants may end up with letter/pillar boxing which you can control via the **Scene.LetterboxColor**. You can set the default `SceneResolutionPolicy` used for all scenes by calling **Scene.SetDefaultDesignResolution**. The included SceneResolutionPolicys are below:
+Ash provides several different ways to get your final scene rendered flexibly and efficiently. It uses a concept called `SceneResolutionPolicy` to manage how things are rendered. The `SceneResolutionPolicy` along with the design time width/height that you set decides what size the RenderTarget2D should be and how it changes when the window size changes. Several SceneResolutionPolicys also include pixel perfect variants for use with pixal art games. Pixel perfect variants may end up with letter/pillar boxing which you can control via the **Scene.LetterboxColor**. You can set the default `SceneResolutionPolicy` used for all scenes by calling **Scene.SetDefaultDesignResolution**. The included SceneResolutionPolicys are below:
 
 - **None**: Default. RenderTarget2D matches the sceen size
 - **ExactFit**: The entire application is visible in the specified area without trying to preserve the original aspect ratio. Distortion can occur, and the application may appear stretched or compressed.
@@ -46,7 +46,7 @@ Some of the key/important properties on an Entity are the following:
 - **UpdateInterval**: specifies how often this Entities update method should be called. 1 means every frame, 2 is every other, etc
 
 ## Component
-Components are added to and managed by an Entity. They make up the meat of your game and are basically reuseable chunks of code that decide how your Entities will behave. Several Component subclasses are included with Nez including text display, image display, animated sprites, Tiled maps and more.
+Components are added to and managed by an Entity. They make up the meat of your game and are basically reuseable chunks of code that decide how your Entities will behave. Several Component subclasses are included with Ash including text display, image display, animated sprites, Tiled maps and more.
 
 Component Lifecycle methods:
 
