@@ -2,7 +2,7 @@ name: Publish Packages
 
 on:
   push:
-    branches: [ master ]
+    branches: [ production ]
 
 jobs:
   build:
@@ -13,7 +13,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.1.101
+        dotnet-version: '3.1.x'
     - name: Install dependencies
       run: dotnet restore
     - name: Build Portable
@@ -23,22 +23,22 @@ jobs:
       uses: brandedoutcast/publish-nuget@v2.5.2
       with:
           PROJECT_FILE_PATH: Ash.Portable/Ash.csproj
-          NUGET_KEY: ${{secrets.GITHUB_TOKEN}}
+          NUGET_KEY: ${{secrets.NUGET_TOKEN}}
 
     - name: Publish Content
       uses: brandedoutcast/publish-nuget@v2.5.2
       with:
           PROJECT_FILE_PATH: Ash.Content/Ash.Content.csproj
-          NUGET_KEY: ${{secrets.GITHUB_TOKEN}}
+          NUGET_KEY: ${{secrets.NUGET_TOKEN}}
           
     - name: Publish DefaultEC
       uses: brandedoutcast/publish-nuget@v2.5.2
       with:
           PROJECT_FILE_PATH: Ash.DefaultEC/Ash.DefaultEC.csproj
-          NUGET_KEY: ${{secrets.GITHUB_TOKEN}}
+          NUGET_KEY: ${{secrets.NUGET_TOKEN}}
           
     - name: Publish Gia
       uses: brandedoutcast/publish-nuget@v2.5.2
       with:
           PROJECT_FILE_PATH: Ash.Gia/Ash.Gia.csproj
-          NUGET_KEY: ${{secrets.GITHUB_TOKEN}}
+          NUGET_KEY: ${{secrets.NUGET_TOKEN}}
