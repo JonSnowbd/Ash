@@ -7,8 +7,6 @@ namespace Ash.UIComponents
 {
     public class TextInput : UIComponent
     {
-        public delegate string Binding();
-
         IFont _labelFont;
         Vector2 _Bounds;
         int _padding;

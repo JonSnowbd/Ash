@@ -11,15 +11,76 @@ using System.Text;
 
 namespace Ash
 {
+    /// <summary>
+    /// A scene to be used in <c>Core.Scene</c>. GiaScenes construct their systems and entities
+    /// during their constructor, and will not unload their assets until specifically
+    /// disposed, so feel free to swap between GiaScenes as game flow. If you want this to be destroyed
+    /// on scene switch, set <c>GiaScene.DestroyOnExit = true</c>
+    /// </summary>
     public class GiaScene : IScene, IDisposable
     {
-        public delegate string WindowTitleNub(GiaScene scene);
-        public FastList<WindowTitleNub> Nubs;
+        public enum AspectRatioResolution
+        {
+            /// <summary>
+            /// The final image will fill the entire screen, no matter the ratio difference.
+            /// </summary>
+            Stretch,
 
+            /// <summary>
+            /// The final image will be stretched, but will maintain its aspect ratio, centered(or not with AspectOrigin)
+            /// with letterboxing.
+            /// </summary>
+            MaintainRatio,
+
+            /// <summary>
+            /// Same as MaintainRatio, except it will overscale to fill the letterbox.
+            /// </summary>
+            MaintainRatioFill
+        }
+
+        /// <summary>
+        /// A delegate that takes a scene context and outputs a string that will
+        /// be shown on the titlebar during analytic ticks.
+        /// </summary>
+        public delegate string WindowTitleNub(GiaScene scene);
+        /// <summary>
+        /// A list of <c>GiaScene.WindowTitleNub</c> delegate methods. Anything in here
+        /// will be ran and output into the window title for nice 
+        /// </summary>
+        public FastList<WindowTitleNub> Nubs;
+        /// <summary>
+        /// This isnt used in anything, but it can be useful for organizing
+        /// your scenes.
+        /// </summary>
         public string SceneName;
+        /// <summary>
+        /// This is the World used in all the systems and entities in this Scene.
+        /// It comes from <c>DefaultECS</c>, the ECS that Gia uses internally.
+        /// Pass this to any Systems you create.
+        /// </summary>
         public World World;
+        /// <summary>
+        /// A parallel running context, I don't recommend making a parallel system
+        /// without some prior experience, they're kinda messy in monogame.
+        /// </summary>
         public IParallelRunner Runner;
+        /// <summary>
+        /// The content manager for this scene. Try to load everything you can in
+        /// here rather than <c>Core.Content</c>. Everything loaded here gets
+        /// disposed and unloaded when the scene gets .Disposed
+        /// </summary>
         public NezContentManager Content;
+
+        /// <summary>
+        /// This determines how the final image gets placed on the screen if you are
+        /// not using <c>GiaScene.AutoResizeToNativeResolution = true</c>
+        /// </summary>
+        public AspectRatioResolution AspectRatio;
+        /// <summary>
+        /// For certain AspectRatio settings, it may be necessary to have an "origin"
+        /// for the final image. It is expected to be a normal. By default this is <c>Vector2(0.5f,0.5f)</c>.
+        /// </summary>
+        public Vector2 AspectOrigin;
 
         public FastList<ISystem<GiaScene>> UpdateSystems;
         public FastList<ISystem<GiaScene>> RenderSystems;
@@ -31,8 +92,11 @@ namespace Ash
 
         public Camera View;
         public RectangleF ScreenBounds;
+        RectangleF FinalScreenOutput;
+        float ScreenScale;
 
         public bool DestroyOnExit;
+        public bool AutoResizeToNativeResolution;
 
         public Vector2 MouseDelta;
         public Vector2 WorldMousePosition;
@@ -46,8 +110,14 @@ namespace Ash
             View = new Camera();
             View.Origin = new Vector2(Screen.Width * 0.5f, Screen.Height * 0.5f);
             ScreenBounds = new RectangleF(0, 0, Screen.Width, Screen.Height);
+            FinalScreenOutput = new RectangleF(0, 0, Screen.Width, Screen.Height);
+            AutoResizeToNativeResolution = true;
 
-            DestroyOnExit = true;
+            AspectRatio = AspectRatioResolution.Stretch;
+            AspectOrigin = new Vector2(0.5f, 0.5f);
+            SamplerState = SamplerState.PointClamp;
+
+            DestroyOnExit = false;
             Nubs = new FastList<WindowTitleNub>();
             Runner = new DefaultParallelRunner(Environment.ProcessorCount);
             World = new World();
@@ -57,8 +127,6 @@ namespace Ash
             Batcher = Graphics.Instance.Batcher;
             SceneTarget = new RenderTarget2D(Core.GraphicsDevice, Screen.Width, Screen.Height);
 
-            SamplerState = SamplerState.PointClamp;
-
             ConstructSystemGraph(UpdateSystems, RenderSystems);
             ConstructEntityGraph();
             Gia.BeingConstructed = null;
@@ -66,11 +134,17 @@ namespace Ash
 
         public virtual void ConstructSystemGraph(FastList<ISystem<GiaScene>> updateSystems, FastList<ISystem<GiaScene>> renderSystems)
         {
-
+            AddDefaultSystems();
+            Debug.Warn("Added default systems. Though nice, they are likely not suited for your game! Override ConstructSystemGraph in " + GetType().Name);
         }
         public virtual void ConstructEntityGraph()
         {
+            string message = "Welcome to Gia!\nYou'll need to override ConstructSystemGraph and ConstructEntityGraph\nIn order to start your game.";
+            var stringMeasure = Gia.Theme.DefaultFont.MeasureString(message);
 
+            var welcome = World.CreateEntity();
+            welcome.Set(new AABB(Screen.Width / 2, Screen.Height / 2, stringMeasure.X, stringMeasure.Y));
+            Debug.Warn("Added default Entities. This means your scene is basically empty. Override ConstructEntityGraph in " + GetType().Name);
         }
 
         public void Begin()
@@ -81,6 +155,7 @@ namespace Ash
 
         public void End()
         {
+            Pause();
             if (DestroyOnExit)
             {
                 Dispose();
@@ -98,6 +173,7 @@ namespace Ash
                 Gia.Debug.Enabled = !Gia.Debug.Enabled;
             Analytics();
 #endif
+            CalculateFinalRenderTargetDestination();
             InternalInputUpdate();
             for (int i = 0; i < UpdateSystems.Length; i++)
             {
@@ -119,20 +195,74 @@ namespace Ash
                 RenderSystems[i].Update(this);
             }
 
+            Graphics.Instance.Batcher.Begin();
+            Graphics.Instance.Batcher.DrawPixel(MousePosition, Color.Red, 5);
+            Graphics.Instance.Batcher.DrawString(Gia.Theme.DeveloperFont, MousePosition.ToPoint().ToString(), MousePosition, Color.Red);
+            Graphics.Instance.Batcher.End();
+
             // Then Finalize to screen.
             Core.GraphicsDevice.SetRenderTarget(null);
-            Core.GraphicsDevice.Clear(Gia.Theme.BackgroundColor);
+            Core.GraphicsDevice.Clear(Gia.Theme.ApplicationNullColor);
 
-            Graphics.Instance.Batcher.Begin(BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
-            Graphics.Instance.Batcher.Draw(SceneTarget, new Rectangle(0, 0, Screen.Width, Screen.Height), Color.White);
+            Graphics.Instance.Batcher.Begin(BlendState.AlphaBlend, SamplerState, null, null);
+
+            Graphics.Instance.Batcher.Draw(SceneTarget, FinalScreenOutput, Color.White);
 
             if (Gia.Debug.Enabled)
                 Gia.Debug.Flush(Graphics.Instance.Batcher);
             else
                 Gia.Debug.Cancel();
 
+            Graphics.Instance.Batcher.DrawPixel(Input.MousePosition, Color.Orange, 5);
+
             Graphics.Instance.Batcher.End();
 
+        }
+
+        void CalculateFinalRenderTargetDestination()
+        {
+            if (AutoResizeToNativeResolution)
+            {
+                FinalScreenOutput = new RectangleF(0, 0, Screen.Width, Screen.Height);
+                return;
+            }
+
+            switch (AspectRatio)
+            {
+                case AspectRatioResolution.Stretch:
+                    {
+                        FinalScreenOutput = new RectangleF(0, 0, Screen.Width, Screen.Height);
+                        break;
+                    }
+                case AspectRatioResolution.MaintainRatio:
+                    {
+                        ScreenScale = Math.Min((float)Screen.Width / (float)SceneTarget.Width, (float)Screen.Height / (float)SceneTarget.Height);
+                        FinalScreenOutput = new RectangleF(Vector2.Zero, new Vector2(SceneTarget.Width * ScreenScale, SceneTarget.Height * ScreenScale));
+
+                        var remainingWidth = Screen.Width - FinalScreenOutput.Width;
+                        var remainingHeight = Screen.Height - FinalScreenOutput.Height;
+
+                        var offset = new Vector2(remainingWidth, remainingHeight) * AspectOrigin;
+
+                        FinalScreenOutput.Location = offset;
+
+                        break;
+                    }
+                case AspectRatioResolution.MaintainRatioFill:
+                    {
+                        ScreenScale = Math.Max((float)Screen.Width / (float)SceneTarget.Width, (float)Screen.Height / (float)SceneTarget.Height);
+                        FinalScreenOutput = new RectangleF(Vector2.Zero, new Vector2(SceneTarget.Width * ScreenScale, SceneTarget.Height * ScreenScale));
+
+                        var remainingWidth = Screen.Width - FinalScreenOutput.Width;
+                        var remainingHeight = Screen.Height - FinalScreenOutput.Height;
+
+                        var offset = new Vector2(remainingWidth, remainingHeight) * AspectOrigin;
+
+                        FinalScreenOutput.Location = offset;
+
+                        break;
+                    }
+            }
         }
 
         float analyticsTimer = 0;
@@ -159,8 +289,13 @@ namespace Ash
 
         void InternalInputUpdate()
         {
-            MousePosition = Input.MousePosition;
-            MouseDelta = Input.MousePositionDelta.ToVector2() / View.Zoom;
+            var st_size = new Vector2(SceneTarget.Width, SceneTarget.Height);
+            var delta = (Input.MousePosition - FinalScreenOutput.Location) / FinalScreenOutput.Size;
+            delta = Vector2.Clamp(delta, Vector2.Zero, st_size);
+            var x = Mathf.Lerp(0f, st_size.X, delta.X);
+            var y = Mathf.Lerp(0f, st_size.Y, delta.Y);
+            MousePosition = new Vector2(x, y);
+            MouseDelta = Input.MousePositionDelta.ToVector2() / View.Zoom / ScreenScale;
 
             if(View.Rotation != 0f)
             {
@@ -205,7 +340,8 @@ namespace Ash
         }
 
         /// <summary>
-        /// Called when this scene is unset as the current scene. Can happen multiple times.
+        /// Called when this scene is unset as the current scene. Can happen multiple times, unless
+        /// <c>GiaScene.DestroyOnExit = true</c>.
         /// </summary>
         public virtual void Pause()
         {
@@ -246,6 +382,7 @@ namespace Ash
             if (SceneTarget != null)
                 SceneTarget.Dispose();
             SceneTarget = new RenderTarget2D(Core.GraphicsDevice, width, height);
+            ScreenBounds = new RectangleF(0, 0, width, height);
         }
     }
 }
