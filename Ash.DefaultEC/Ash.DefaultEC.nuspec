@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+
+<package>
+    <metadata>
+        <id>Ash.DefaultEC</id>
+		<version>1.1.5</version>
+        <authors>prime31,PySnow</authors>
+        <projectUrl>https://jonsnowbd.github.io/Ash/</projectUrl>
+		<repository type="git" url="https://github.com/JonSnowbd/Ash.git" />
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Add Default to your Ash game to quickly roll out your EC solution.</description>
+        <tags>2D Gamedev Monogame Nez Ash Library</tags>
+		<license type="expression">MIT</license>
+		<dependencies>
+			<dependency id="MonoGame.Framework.DesktopGL" version="3.8.0.1641" />
+			<dependency id="Newtonsoft.Json" version="12.0.3"  />
+		</dependencies>
+    </metadata>
+	<files>
+		<file src="bin\Release\netstandard2.0\Ash.DefaultEC.dll" target = "lib\netstandard2.0" />
+		<file src="bin\Release\netstandard2.0\Ash.DefaultEC.pdb" target = "lib\netstandard2.0" />
+		<file src="bin\Release\netstandard2.0\Ash.DefaultEC.deps.json" target = "lib\netstandard2.0" />
+    </files>
+</package>
