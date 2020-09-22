@@ -924,6 +924,11 @@ namespace Ash
 			return !(a == b);
 		}
 
+		public static RectangleF operator +(RectangleF a, RectangleF b)
+		{
+			return new RectangleF(a.Location + b.Location, a.Size + b.Size);
+		}
+
 
 		public static implicit operator Rectangle(RectangleF self)
 		{

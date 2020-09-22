@@ -4,7 +4,7 @@ using System;
 
 namespace Ash
 {
-    public abstract class RenderSystem : AEntitySystem<GiaScene>
+    public abstract class RenderSystem : AEntitySystem<GiaScene>, IInspectable
     {
         public Material Material;
         public bool IsPartOfSharedSystem;
@@ -92,16 +92,16 @@ namespace Ash
 
             if (Gia.Debug.Enabled && inspecting)
             {
-                Gia.Debug.DeferStringMessage($"SpriteRenderer: {drawnItems} Drawn, {skippedItems} Skipped", true);
+                Gia.Debug.DeferStringMessage($"{GetType().Name}: {drawnItems} Drawn, {skippedItems} Skipped", true);
             }
         }
 
-        public void Inspect()
+        public void Inspect(GiaScene context)
         {
             Gia.Current.Nubs.Add(InspectionNub);
             inspecting = true;
         }
-        public void Uninspect()
+        public void Uninspect(GiaScene context)
         {
             Gia.Current.Nubs.Remove(InspectionNub);
             inspecting = false;

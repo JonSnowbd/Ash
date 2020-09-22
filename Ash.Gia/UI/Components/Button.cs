@@ -5,7 +5,7 @@ namespace Ash.UIComponents
 {
     public class Button : UIComponent, ITransactionalComponent<bool>
     {
-        UserInterface.TransactionalBinding<bool> ExternalAction;
+        public UserInterface.TransactionalBinding<bool> ClickAction;
         public Color FontColor;
         public Color IdleColor;
         public Color HoverColor;
@@ -29,6 +29,9 @@ namespace Ash.UIComponents
             Message = message;
             Padding = padding;
 
+            ClickAction = new UserInterface.TransactionalBinding<bool>();
+            ConsumesMouseInput = true;
+
             // Colors
             IdleColor = idle;
             HoverColor = hover;
@@ -50,11 +53,11 @@ namespace Ash.UIComponents
             {
                 realColor = ActiveColor;
                 Manager.SetFocus(this);
-                ExternalAction?.PushFromControl(true);
+                ClickAction?.PushFromControl(true);
             };
             Interactivity.OnEndClicking += (node) =>
             {
-                ExternalAction?.PushFromControl(false);
+                ClickAction?.PushFromControl(false);
             };
             Interactivity.OnUnhover += (node) => target = IdleColor;
         }
@@ -84,8 +87,8 @@ namespace Ash.UIComponents
 
         public void Take(UserInterface.TransactionalBinding<bool> transaction)
         {
-            ExternalAction = transaction;
-            ExternalAction.PushFromControl(false); // Buttons start out not clicked.
+            ClickAction = transaction;
+            ClickAction.PushFromControl(false); // Buttons start out not clicked.
         }
     }
 }

@@ -108,14 +108,13 @@ namespace Ash
             Gia.BeingConstructed = this;
 
             View = new Camera();
-            View.Origin = new Vector2(Screen.Width * 0.5f, Screen.Height * 0.5f);
-            ScreenBounds = new RectangleF(0, 0, Screen.Width, Screen.Height);
-            FinalScreenOutput = new RectangleF(0, 0, Screen.Width, Screen.Height);
             AutoResizeToNativeResolution = true;
 
             AspectRatio = AspectRatioResolution.Stretch;
             AspectOrigin = new Vector2(0.5f, 0.5f);
             SamplerState = SamplerState.PointClamp;
+
+            SetSceneSize(Screen.Width, Screen.Height);
 
             DestroyOnExit = false;
             Nubs = new FastList<WindowTitleNub>();
@@ -125,13 +124,22 @@ namespace Ash
             UpdateSystems = new FastList<ISystem<GiaScene>>();
             RenderSystems = new FastList<ISystem<GiaScene>>();
             Batcher = Graphics.Instance.Batcher;
-            SceneTarget = new RenderTarget2D(Core.GraphicsDevice, Screen.Width, Screen.Height);
 
             ConstructSystemGraph(UpdateSystems, RenderSystems);
             ConstructEntityGraph();
             Gia.BeingConstructed = null;
+
+            Core.Instance.Window.ClientSizeChanged += (s,e) => AdaptSize();
         }
 
+        /// <summary>
+        /// Called after system and entity graphs, in here you should do things like setting the aspect
+        /// ratio settings and Screen/Scene sizes.
+        /// </summary>
+        public virtual void InitializeScene()
+        {
+
+        }
         public virtual void ConstructSystemGraph(FastList<ISystem<GiaScene>> updateSystems, FastList<ISystem<GiaScene>> renderSystems)
         {
             AddDefaultSystems();
@@ -143,7 +151,8 @@ namespace Ash
             var stringMeasure = Gia.Theme.DefaultFont.MeasureString(message);
 
             var welcome = World.CreateEntity();
-            welcome.Set(new AABB(Screen.Width / 2, Screen.Height / 2, stringMeasure.X, stringMeasure.Y));
+            welcome.Set(new AABB(-stringMeasure.X * 0.5f, -stringMeasure.Y * 0.5f, stringMeasure.X, stringMeasure.Y));
+            welcome.Set(new Text(message));
             Debug.Warn("Added default Entities. This means your scene is basically empty. Override ConstructEntityGraph in " + GetType().Name);
         }
 
@@ -168,6 +177,10 @@ namespace Ash
         /// </summary>
         public virtual void Update()
         {
+            // Reset input guard state per frame.
+            Gia.IsConsumingKeyboard = false;
+            Gia.IsConsumingMouse = false;
+
 #if DEBUG
             if (Gia.Debug.ToggleInput.IsPressed)
                 Gia.Debug.Enabled = !Gia.Debug.Enabled;
@@ -195,11 +208,6 @@ namespace Ash
                 RenderSystems[i].Update(this);
             }
 
-            Graphics.Instance.Batcher.Begin();
-            Graphics.Instance.Batcher.DrawPixel(MousePosition, Color.Red, 5);
-            Graphics.Instance.Batcher.DrawString(Gia.Theme.DeveloperFont, MousePosition.ToPoint().ToString(), MousePosition, Color.Red);
-            Graphics.Instance.Batcher.End();
-
             // Then Finalize to screen.
             Core.GraphicsDevice.SetRenderTarget(null);
             Core.GraphicsDevice.Clear(Gia.Theme.ApplicationNullColor);
@@ -213,10 +221,7 @@ namespace Ash
             else
                 Gia.Debug.Cancel();
 
-            Graphics.Instance.Batcher.DrawPixel(Input.MousePosition, Color.Orange, 5);
-
             Graphics.Instance.Batcher.End();
-
         }
 
         void CalculateFinalRenderTargetDestination()
@@ -224,6 +229,7 @@ namespace Ash
             if (AutoResizeToNativeResolution)
             {
                 FinalScreenOutput = new RectangleF(0, 0, Screen.Width, Screen.Height);
+                ScreenScale = 1f;
                 return;
             }
 
@@ -289,15 +295,12 @@ namespace Ash
 
         void InternalInputUpdate()
         {
-            var st_size = new Vector2(SceneTarget.Width, SceneTarget.Height);
+            var sceneSize = new Vector2(SceneTarget.Width, SceneTarget.Height);
             var delta = (Input.MousePosition - FinalScreenOutput.Location) / FinalScreenOutput.Size;
-            delta = Vector2.Clamp(delta, Vector2.Zero, st_size);
-            var x = Mathf.Lerp(0f, st_size.X, delta.X);
-            var y = Mathf.Lerp(0f, st_size.Y, delta.Y);
-            MousePosition = new Vector2(x, y);
+            MousePosition = delta * sceneSize;
             MouseDelta = Input.MousePositionDelta.ToVector2() / View.Zoom / ScreenScale;
 
-            if(View.Rotation != 0f)
+            if (View.Rotation != 0f)
             {
                 LateralWorldMouseDelta = View.ToLateral(MouseDelta);
             }
@@ -319,7 +322,12 @@ namespace Ash
         {
             return new SequentialSystem<GiaScene>
             (
-                new SpriteRenderer(World, screenSpace: false),
+                new SharedRenderPhase
+                (   
+                    screenSpace: false, 
+                    new SpriteRenderer(World, screenSpace: false),
+                    new TextRenderSystem(World, screenSpace: false)
+                ),
                 new UIRenderer(World, screenSpace: true)
             );
         }
@@ -336,7 +344,7 @@ namespace Ash
         /// </summary>
         public virtual void Resume()
         {
-
+            AdaptSize();
         }
 
         /// <summary>
@@ -356,18 +364,21 @@ namespace Ash
             Nubs.Add(FpsNub);
             Nubs.Add(DrawCallNub);
         }
+        /// <summary>
+        /// Removes the 2 Nubs that inspects the fps and draw calls.
+        /// </summary>
         public void Uninspect()
         {
             Nubs.Remove(FpsNub);
             Nubs.Remove(DrawCallNub);
         }
+
         string FpsNub(GiaScene context)
         {
             return ((int)(1f / Time.UnscaledDeltaTime)).ToString() + " FPS";
         }
         string DrawCallNub(GiaScene context)
         {
-            
             return $"{Core.DrawCalls} Draws";
         }
 
@@ -379,10 +390,39 @@ namespace Ash
 
         void SetSceneSize(int width, int height)
         {
-            if (SceneTarget != null)
-                SceneTarget.Dispose();
-            SceneTarget = new RenderTarget2D(Core.GraphicsDevice, width, height);
+            if(SceneTarget == null)
+            {
+                SceneTarget = new RenderTarget2D(Core.GraphicsDevice, width, height);
+            }
+            if (SceneTarget.Width != width || SceneTarget.Height != height)
+            {
+                if (SceneTarget != null)
+                    SceneTarget.Dispose();
+                SceneTarget = new RenderTarget2D(Core.GraphicsDevice, width, height);
+            }
+
             ScreenBounds = new RectangleF(0, 0, width, height);
+
+            View.ViewportSize = new Vector2(SceneTarget.Width, SceneTarget.Height);
+            View.Origin = View.ViewportSize * 0.5f;
+        }
+
+        /// <summary>
+        /// Makes the scene render to a specific size and then upscale it or downscale it
+        /// to fit the window.
+        /// </summary>
+        public void LockSceneSize(int width, int height)
+        {
+            AutoResizeToNativeResolution = false;
+            SetSceneSize(width, height);
+        }
+
+        void AdaptSize()
+        {
+            if (AutoResizeToNativeResolution)
+            {
+                SetSceneSize(Screen.Width, Screen.Height);
+            }
         }
     }
 }

@@ -15,6 +15,12 @@ namespace Ash
 			set { _position = value; _areMatrixesDirty = true; _areBoundsDirty = true; }
 		}
 
+		public Vector2 ViewportSize
+        {
+			get => _viewSize;
+            set { _viewSize = value; _areBoundsDirty = true; _isProjectionMatrixDirty = true; }
+        }
+
 		/// <summary>
 		/// shortcut to entity.transform.rotation
 		/// </summary>
@@ -52,17 +58,17 @@ namespace Ash
 					var topLeft = ScreenToWorldPoint(new Vector2(Core.GraphicsDevice.Viewport.X,
 						Core.GraphicsDevice.Viewport.Y));
 					var bottomRight = ScreenToWorldPoint(new Vector2(
-						Core.GraphicsDevice.Viewport.X + Core.GraphicsDevice.Viewport.Width,
-						Core.GraphicsDevice.Viewport.Y + Core.GraphicsDevice.Viewport.Height));
+						Core.GraphicsDevice.Viewport.X + ViewportSize.X,
+						Core.GraphicsDevice.Viewport.Y + ViewportSize.Y));
 
 					if (Rotation != 0)
 					{
 						// special care for rotated bounds. we need to find our absolute min/max values and create the bounds from that
 						var topRight = ScreenToWorldPoint(new Vector2(
-							Core.GraphicsDevice.Viewport.X + Core.GraphicsDevice.Viewport.Width,
+							Core.GraphicsDevice.Viewport.X + ViewportSize.X,
 							Core.GraphicsDevice.Viewport.Y));
 						var bottomLeft = ScreenToWorldPoint(new Vector2(Core.GraphicsDevice.Viewport.X,
-							Core.GraphicsDevice.Viewport.Y + Core.GraphicsDevice.Viewport.Height));
+							Core.GraphicsDevice.Viewport.Y + ViewportSize.Y));
 
 						var minX = Mathf.MinOf(topLeft.X, bottomRight.X, topRight.X, bottomLeft.X);
 						var maxX = Mathf.MaxOf(topLeft.X, bottomRight.X, topRight.X, bottomLeft.X);
@@ -125,8 +131,8 @@ namespace Ash
 			{
 				if (_isProjectionMatrixDirty)
 				{
-					Matrix.CreateOrthographicOffCenter(0, Core.GraphicsDevice.Viewport.Width,
-						Core.GraphicsDevice.Viewport.Height, 0, 0, -1, out _projectionMatrix);
+					Matrix.CreateOrthographicOffCenter(0, _viewSize.X,
+						_viewSize.Y, 0, 0, -1, out _projectionMatrix);
 					_isProjectionMatrixDirty = false;
 				}
 
@@ -153,6 +159,7 @@ namespace Ash
 			}
 		}
 
+		Vector2 _viewSize;
 		Vector2 _position;
 		float _zoom;
 		float _rotation;
@@ -168,6 +175,8 @@ namespace Ash
 
 		public Camera()
         {
+			ViewportSize = Screen.Size;
+			Origin = ViewportSize * 0.5f;
 			Position = new Vector2(0, 0);
 			Rotation = 0;
 			Zoom = 1f;

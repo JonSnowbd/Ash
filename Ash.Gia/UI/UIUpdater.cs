@@ -45,11 +45,25 @@ namespace Ash.UI
                 }
             }
 
-            if (ui.Hover != null && ui.Hover.Interactivity != null)
-                ui.Hover.Interactivity.Update(Time.UnscaledDeltaTime);
+            if(ui.Hover != null)
+            {
+                if (ui.Hover.ConsumesMouseInput)
+                    Gia.IsConsumingMouse = true;
+                if (ui.Hover.Interactivity != null)
+                {
+                    ui.Hover.Interactivity.Update(Time.UnscaledDeltaTime);
+                }
+            }
 
             if(ui.GetFocus() is UIComponent uic)
+            {
                 uic.FocusUpdate();
+                if (uic.ConsumesMouseInput)
+                    Gia.IsConsumingMouse = true;
+                if (uic.ConsumesKeyboardInput)
+                    Gia.IsConsumingKeyboard = true;
+            }
+                
         }
     }
 }

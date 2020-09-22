@@ -13,8 +13,13 @@ namespace Ash.UIComponents
         /// </summary>
         public DrawDelegate DrawMethod;
 
+        public bool ConsumesKeyboardInput;
+        public bool ConsumesMouseInput;
+
         public UIComponent()
         {
+            ConsumesKeyboardInput = false;
+            ConsumesMouseInput = false;
             DebugUpdateValue = 0f;
 #if DEBUG
             OnLayoutRecalculated += (node) => DebugUpdateValue = 1f;

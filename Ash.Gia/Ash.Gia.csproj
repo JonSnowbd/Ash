@@ -1,11 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-	<AssemblyName>Ash.Gia</AssemblyName>
-	<Version>1.1.5</Version>
-	<NuspecFile>Ash.Gia.nuspec</NuspecFile>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<AssemblyName>Ash.Gia</AssemblyName>
+		<Version>1.1.6</Version>
+		<NuspecFile>Ash.Gia.nuspec</NuspecFile>
+	</PropertyGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="../Ash.Portable/Ash.csproj" />

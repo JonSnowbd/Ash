@@ -25,13 +25,13 @@ namespace Ash.UI
             public void PushFromControl(T value)
             {
                 Value = value;
-                InternalPush(value);
+                InternalPush?.Invoke(value);
             }
 
             public void PushFromExternal(T value)
             {
                 Value = value;
-                ExternalPush(value);
+                ExternalPush?.Invoke(value);
             }
         }
         public UIComponent Hover;

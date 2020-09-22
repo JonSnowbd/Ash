@@ -1,9 +1,8 @@
 ﻿using DefaultEcs.System;
-using System;
 
 namespace Ash
 {
-    public class SharedRenderPhase : ISystem<GiaScene>
+    public class SharedRenderPhase : ISystem<GiaScene>, IInspectable
     {
         RenderSystem[] Systems;
 
@@ -53,18 +52,18 @@ namespace Ash
 
         }
 
-        public void Inspect()
+        public void Inspect(GiaScene context)
         {
             for(int i = 0; i < Systems.Length; i++)
             {
-                Systems[i].Inspect();
+                Systems[i].Inspect(context);
             }
         }
-        public void Uninspect()
+        public void Uninspect(GiaScene context)
         {
             for (int i = 0; i < Systems.Length; i++)
             {
-                Systems[i].Uninspect();
+                Systems[i].Uninspect(context);
             }
         }
     }

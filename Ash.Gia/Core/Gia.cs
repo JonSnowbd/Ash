@@ -17,5 +17,17 @@
                 return current; 
             } 
         }
+
+        public static bool IsConsumingKeyboard = false;
+        public static bool KeyboardGuard()
+        {
+            return !IsConsumingKeyboard;
+        }
+
+        public static bool IsConsumingMouse = false;
+        public static bool MouseGuard()
+        {
+            return !IsConsumingMouse;
+        }
     }
 }

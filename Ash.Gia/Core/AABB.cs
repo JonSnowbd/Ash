@@ -2,16 +2,31 @@
 
 namespace Ash
 {
-    public class AABB
+    public struct AABB
     {
         public bool Hidden;
         public RectangleF Bounds;
+        /// <summary>
+        /// A non-normalized origin. This is in pixels, and is local.
+        /// For example if you had an AABB{30,30,50,50} and wanted a centered
+        /// origin, you supply Vector2{25,25}
+        /// </summary>
+        public Vector2 Origin;
 
-        public AABB(float x = 0, float y = 0, float width = 0, float height = 0)
+        public AABB(float x = 0, float y = 0, float width = 0, float height = 0, float originX = 0, float originY = 0)
         {
             Bounds = new RectangleF(x, y, width, height);
             Hidden = false;
+            Origin = new Vector2(originX, originY);
         }
+        public AABB(Vector2 pos, Vector2 size, Vector2 origin)
+        {
+            Bounds = new RectangleF(pos, size);
+            Hidden = false;
+            Origin = origin;
+        }
+        public AABB(Vector2 pos, Vector2 size) : this(pos, size, Vector2.Zero)
+        { }
 
         public override bool Equals(object obj)
         {

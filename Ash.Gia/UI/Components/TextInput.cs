@@ -45,6 +45,9 @@ namespace Ash.UIComponents
             PanelColor = backColor;
             FontGhostColor = Color.FromNonPremultiplied(FontColor.R, FontColor.G, FontColor.B, 100);
 
+            ConsumesKeyboardInput = true;
+            ConsumesMouseInput = true;
+
             SetWidthToGrow();
 
             CalculateBounds();
