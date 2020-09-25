@@ -8,8 +8,11 @@ assumptions made about them so you are free to create your game under any paradi
 be reduced to a single `Scene` class.
 
 By default this is [nothing but an interface](https://github.com/JonSnowbd/Ash/blob/py-2.0/Ash.Portable/IScene.cs)
-that exposes some necessary methods like `Update` and `Render`. By default there is nothing
-that implements this, so there are only 2 options; rolling your own, or importing [Ash.DefaultEC](/overview/nez-defaultec).
+that exposes some necessary methods like `Update` and `Render`. There are 3 options; rolling your own by implementing `IScene`, importing either 
+[Ash.DefaultEC](/overview/nez-defaultec) or [Ash.Gia](/overview/nez-gia), or inheriting from
+[`SimpleScene`](https://github.com/JonSnowbd/Ash/blob/production/Ash.Portable/SimpleScene/SimpleScene.cs).
+
+It is recommended to pick a full package, but all of the above options are very accessible.
 
 ----
 
@@ -50,10 +53,10 @@ protected virtual void EndRun();
 ## Loading
 
 Asset loading in Ash is different to XNA-derivatives. Instead of using a content builder
-we load the assets directly through `NezContentManager` classes that have special methods
+we load the assets directly through `AshContentManager` classes that have special methods
 to load each file type(including stuff like Ogmo/Tiled/Json files).
 
-There will always be a `GlobalNezContentManager` available on the `Core` class, this
+There will always be a `GlobalAshContentManager` available on the `Core` class, this
 will let you load global assets to use everywhere that will never get unloaded.
 
 ## Unloading

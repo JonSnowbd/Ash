@@ -46,6 +46,7 @@ and an IScene implementation(Ash.DefaultEC in this case).
 ```bash
 $ cd .. # Back up to GAME/
 $ dotnet sln add Ash/Ash.Portable/Ash.csproj
+$ dotnet sln add Ash/Ash.Content/Ash.Content.csproj
 $ dotnet sln add Ash/Ash.DefaultEC/Ash.DefaultEC.csproj
 $ dotnet sln add GAME/GAME.csproj
 ```
@@ -79,8 +80,9 @@ to the first property group. If youre confused you can see the whole .csproj lat
 Then we add the packages for Ash and we're good to go.
 ```xml
 <ItemGroup>
-    <ProjectReference Include="..\Ash\Ash.Portable\Ash.Standard.csproj" />
-    <ProjectReference Include="..\Ash\Ash.DefaultEC\Ash.DefaultEC.Standard.csproj" />
+    <ProjectReference Include="..\Ash\Ash.Portable\Ash.csproj" />
+    <ProjectReference Include="..\Ash\Ash.Content\Ash.Content.csproj" />
+    <ProjectReference Include="..\Ash\Ash.DefaultEC\Ash.DefaultEC.csproj" />
 </ItemGroup>
 ```
 
@@ -100,8 +102,9 @@ So that the entire file looks something like this
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Ash\Ash.Portable\Ash.Standard.csproj" />
-        <ProjectReference Include="..\Ash\Ash.DefaultEC\Ash.DefaultEC.Standard.csproj" />
+        <ProjectReference Include="..\Ash\Ash.Portable\Ash.csproj" />
+        <ProjectReference Include="..\Ash\Ash.Content\Ash.Content.csproj" />
+        <ProjectReference Include="..\Ash\Ash.DefaultEC\Ash.DefaultEC.csproj" />
     </ItemGroup>
 
 </Project>
