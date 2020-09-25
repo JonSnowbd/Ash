@@ -7,7 +7,7 @@ namespace Ash
     /// Use this when the update system does not require a specific set of entities, but instead runs logic
     /// on static state or manages its own <c>EntitySet</c>
     /// </summary>
-    public class StaticUpdateSystem : ISystem<GiaScene>
+    public abstract class StaticUpdateSystem : ISystem<GiaScene>
     {
         protected World CurrentWorld;
 
@@ -23,9 +23,7 @@ namespace Ash
             CurrentWorld = world;
         }
 
-        public virtual void Update(GiaScene state)
-        {
-        }
+        public abstract void Update(GiaScene state);
 
         public void Dispose()
         {

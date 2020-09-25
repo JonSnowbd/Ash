@@ -17,7 +17,7 @@ namespace Ash
 		{
 			get
 			{
-				if (!_guardCache) // Guards prevented input.
+				if (!GuardCache) // Guards prevented input.
 				{
 					return 0;
 				}

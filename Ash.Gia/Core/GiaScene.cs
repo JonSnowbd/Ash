@@ -103,8 +103,12 @@ namespace Ash
         public Vector2 MousePosition;
         public Vector2 LateralWorldMouseDelta;
 
+        public Color ClearColor;
+
         public GiaScene()
         {
+            ClearColor = Color.CornflowerBlue;
+
             Gia.BeingConstructed = this;
 
             View = new Camera();
@@ -127,6 +131,9 @@ namespace Ash
 
             ConstructSystemGraph(UpdateSystems, RenderSystems);
             ConstructEntityGraph();
+
+            InitializeScene();
+
             Gia.BeingConstructed = null;
 
             Core.Instance.Window.ClientSizeChanged += (s,e) => AdaptSize();
@@ -201,7 +208,7 @@ namespace Ash
         public virtual void Render()
         {
             Core.GraphicsDevice.SetRenderTarget(SceneTarget);
-            Core.GraphicsDevice.Clear(Gia.Theme.BackgroundColor);
+            Core.GraphicsDevice.Clear(ClearColor);
 
             for (int i = 0; i < RenderSystems.Length; i++)
             {
@@ -396,8 +403,7 @@ namespace Ash
             }
             if (SceneTarget.Width != width || SceneTarget.Height != height)
             {
-                if (SceneTarget != null)
-                    SceneTarget.Dispose();
+                SceneTarget?.Dispose();
                 SceneTarget = new RenderTarget2D(Core.GraphicsDevice, width, height);
             }
 

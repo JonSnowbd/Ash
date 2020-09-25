@@ -19,8 +19,7 @@ namespace Ash
         public static class Outfit
         {
             /// <summary>
-            /// Create an entity that represents a sprite that will not move. This is faster than a dynamic sprite as it will
-            /// not be iterated over to dynamically update the render volume.
+            /// Create an entity that represents a sprite that will not move.
             /// </summary>
             public static Entity StaticSprite(Vector2 position, Texture2D texture, Rectangle source = default)
             {
@@ -29,8 +28,7 @@ namespace Ash
                 return entity;
             }
             /// <summary>
-            /// Add to an entity to make it represent a sprite that will not move. This is faster than a dynamic sprite as it will
-            /// not be iterated over to dynamically update the render volume.
+            /// Add to an entity to make it represent a sprite that will not move.
             /// </summary>
             public static void StaticSprite(Entity entity, Vector2 position, Texture2D texture, Rectangle source = default)
             {
@@ -62,6 +60,47 @@ namespace Ash
                 entity.Set(aa);
 
                 return (entity, ui.Root);
+            }
+
+
+            /// <summary>
+            /// Create and return a simple AABB+Text entity to display text.
+            /// </summary>
+            public static Entity Text(string text, Vector2 position, IFont font = null)
+            {
+                var entity = Gia.Current.World.CreateEntity();
+                Text(entity, text, position, new Vector2(0.5f, 0.5f), font);
+                return entity;
+            }
+            /// <summary>
+            /// Create and return a simple AABB+Text entity to display text. Initial Origin is the offset of the overall
+            /// size of the text, with 0f being centered on the top left, and 1f being centered on the bottom right.
+            /// </summary>
+            public static Entity Text(string text, Vector2 position, Vector2 initialOrigin, IFont font = null)
+            {
+                var entity = Gia.Current.World.CreateEntity();
+                Text(entity, text, position, initialOrigin, font);
+                return entity;
+            }
+            /// <summary>
+            /// Adds to an entity to make a simple AABB+Text entity to display text. Initial Origin is the offset of the overall
+            /// size of the text, with 0f being centered on the top left, and 1f being centered on the bottom right.
+            /// </summary>
+            public static void Text(Entity entity, string text, Vector2 position, IFont font = null)
+            {
+                Text(entity, text, position, Vector2.Zero, font);
+            }
+            /// <summary>
+            /// Adds to an entity to make a simple AABB+Text entity to display text. Initial Origin is the offset of the overall
+            /// size of the text, with 0f being centered on the top left, and 1f being centered on the bottom right.
+            /// </summary>
+            public static void Text(Entity entity, string text, Vector2 position, Vector2 initialOrigin, IFont font = null)
+            {
+                var realFont = font ?? Theme.DefaultFont;
+                var stringMeasure = realFont.MeasureString(text);
+
+                entity.Set(new AABB(position.X - stringMeasure.X * initialOrigin.X, position.Y, stringMeasure.X - stringMeasure.Y * initialOrigin.Y, stringMeasure.Y));
+                entity.Set(new Text(text, realFont));
             }
         }
     }

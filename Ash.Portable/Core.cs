@@ -7,6 +7,7 @@ using Ash.Timers;
 using Ash.Tweens;
 using System;
 using System.Collections;
+using Ash.BitmapFonts;
 
 namespace Ash
 {
@@ -199,10 +200,24 @@ namespace Ash
 
 			// prep the default Graphics system
 			GraphicsDevice = base.GraphicsDevice;
-			var font = Content.LoadBitmapFont("./DefaultContent/Dev.fnt");
-			var fonts = Content.LoadBitmapFont("./DefaultContent/DevSmall.fnt");
-			var fontn = Content.LoadBitmapFont("./DefaultContent/DevNarrow.fnt");
+			BitmapFont font, fonts, fontn;
+			LoadDefaultContent(out font, out fonts, out fontn);
 			Graphics.Instance = new Graphics(font, fonts, fontn);
+		}
+
+		protected virtual void LoadDefaultContent(out BitmapFont devFont, out BitmapFont devFontSmall, out BitmapFont devFontNarrow)
+		{
+			try
+			{
+				devFont = Content.LoadBitmapFont("./DefaultContent/Dev.fnt");
+				devFontSmall = Content.LoadBitmapFont("./DefaultContent/DevSmall.fnt");
+				devFontNarrow = Content.LoadBitmapFont("./DefaultContent/DevNarrow.fnt");
+			}
+			catch(Exception e)
+			{
+				throw new Exception("Failed to load default content! Make sure you're referencing Ash.Content, or override LoadDefaultContent on your Core.",e);
+			}
+
 		}
 
 		protected override void Update(GameTime gameTime)

@@ -35,7 +35,7 @@ namespace Ash
 		/// complex control layouts where an input is only on when another input is held.
 		/// </summary>
 		public List<GuardDelegate> Guards;
-		protected bool _guardCache;
+		protected bool GuardCache;
 
 		protected VirtualInput()
 		{
@@ -44,12 +44,12 @@ namespace Ash
 		}
 
 		/// <summary>
-		/// This will calculate and assign `_guardCache`. Do this once per frame in your
+		/// This will calculate and assign `GuardCache`. Do this once per frame in your
 		/// virtual inputs.
 		/// </summary>
 		protected void CalculateGuardCache()
 		{
-			_guardCache = true;
+			GuardCache = true;
 			if (Guards.Count == 0)
 				return;
 			else
@@ -57,7 +57,7 @@ namespace Ash
 				{
 					if (guard() == false)
 					{
-						_guardCache = false;
+						GuardCache = false;
 						return;
 					}
 				}
@@ -78,7 +78,7 @@ namespace Ash
 		/// </summary>
 		public void Consume()
 		{
-			_guardCache = false;
+			GuardCache = false;
 		}
 
 		public abstract void Update();

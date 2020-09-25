@@ -27,6 +27,7 @@ namespace Ash
         protected override void DebugDraw(GiaScene context, Batcher batcher, Entity entity, ref AABB bounds)
         {
             Gia.Debug.DeferWorldHollowRect(bounds.Bounds, Color.Orange);
+            Gia.Debug.DeferWorldPixel(bounds.Bounds.Location, Color.Orange, 4);
         }
 
         protected override void Draw(GiaScene context, Batcher batcher, Entity entity, ref AABB bounds)

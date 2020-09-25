@@ -1,6 +1,5 @@
 ﻿using System;
 
-
 namespace Ash.AI.UtilityAI
 {
 	/// <summary>

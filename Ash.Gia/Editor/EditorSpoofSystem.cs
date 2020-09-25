@@ -16,7 +16,6 @@ namespace Ash.Editor
         }
         public override void Update(GiaScene state)
         {
-            base.Update(state);
         }
     }
 }

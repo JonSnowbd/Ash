@@ -1,9 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 
-
-namespace Ash
+namespace Ash.SimpleScene
 {
-    public class Camera
+   public class SimpleCamera
 	{
 		/// <summary>
 		/// shortcut to entity.transform.position
@@ -181,7 +180,7 @@ namespace Ash
 		bool _areBoundsDirty = true;
 		bool _isProjectionMatrixDirty = true;
 
-		public Camera()
+		public SimpleCamera()
         {
 			ViewportSize = Screen.Size;
 			Origin = ViewportSize * 0.5f;

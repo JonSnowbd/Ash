@@ -92,7 +92,7 @@ namespace Ash
 
             if (Gia.Debug.Enabled && inspecting)
             {
-                Gia.Debug.DeferStringMessage($"{GetType().Name}: {drawnItems} Drawn, {skippedItems} Skipped", true);
+                Gia.Debug.DeferStringMessage($"{GetType().Name}: {drawnItems.ToString()} Drawn, {skippedItems.ToString()} Skipped", true);
             }
         }
 

@@ -15,13 +15,18 @@
             Visible
         }
 
+        public IFont Font;
         public string Message;
         public bool Wrapped;
         public Alignment Align;
         public Overflow OverflowBehaviour;
 
-        public Text(string message)
+        public Text(string message) : this(message, Gia.Theme.DefaultFont)
         {
+        }
+        public Text(string message, IFont font)
+        {
+            Font = font;
             Message = message;
             Wrapped = true;
             Align = Alignment.Left;

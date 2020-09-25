@@ -43,11 +43,21 @@ namespace Ash
 			DevFontSmall = small;
 			DevFontNarrow = narrow;
 
-			// the bottom/right pixel is white on the default font so we'll use that for the pixelTexture
-			var fontTex =
-				DevFont.Textures[
-					DevFont.DefaultCharacter.TexturePage]; // bitmapFont.defaultCharacterRegion.sprite.texture2D;
-			PixelTexture = new Sprite(fontTex, fontTex.Width - 1, fontTex.Height - 1, 1, 1);
+			if (DevFont != null)
+			{
+				// the bottom/right pixel is white on the default font so we'll use that for the pixelTexture
+				var fontTex =
+					DevFont.Textures[
+						DevFont.DefaultCharacter.TexturePage]; // bitmapFont.defaultCharacterRegion.sprite.texture2D;
+				PixelTexture = new Sprite(fontTex, fontTex.Width - 1, fontTex.Height - 1, 1, 1);
+			}
+			else
+			{
+				var tex = new Texture2D(Core.GraphicsDevice, 1,1);
+				tex.SetData(new []{Color.White});
+				PixelTexture = new Sprite(tex);
+			}
+
 		}
 
 
