@@ -5,7 +5,6 @@
     <a href="https://www.nuget.org/packages/Ash.Content/"><img src="https://img.shields.io/nuget/v/Ash.Content?label=Ash%20Content%20Nuget" /></a>
     <a href="https://www.nuget.org/packages/Ash.Gia/"><img src="https://img.shields.io/nuget/v/Ash.Gia?label=Ash%20Gia%20Nuget" /></a>
     <a href="https://www.nuget.org/packages/Ash.DefaultEC/"><img src="https://img.shields.io/nuget/v/Ash.DefaultEC?label=Ash%DefaultEC%20Nuget" /></a>
-    <a href="https://discord.gg/uRKsH5y"><img src="https://img.shields.io/discord/759117202493407283?label=Ash%20Discord" /></a>
     <a href="https://github.com/JonSnowbd/Ash/blob/production/LICENSE"><img src="https://img.shields.io/github/license/JonSnowbd/Ash" /></a>
 </p>
 
@@ -15,8 +14,7 @@ the MGCB Content Builder and templates.
 
 ## Warning
 
-For now, Ash is still being largely refactored, this includes class names and style, and general
-features. I do not recommend using Ash yet for stable projects until I've covered all the ground
+For now, Ash is still refactoring and general features. I do not recommend using Ash yet for production projects until I've covered all the ground
 in samples.
 
 ## Installation
